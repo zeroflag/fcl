@@ -33,11 +33,10 @@ For example:
 10 100 max . \ prints 100
 ```
 
-The else part is optional.
+The `else` part is optional.
 
 ```forth
-: abs ( n -- absn )
-  dup 0< if -1 * then ;
+: abs ( n -- n ) dup 0< if -1 * then ;
 
 -10 abs . \ prints 10
 ```
