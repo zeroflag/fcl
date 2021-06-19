@@ -239,6 +239,11 @@ Lists are java.util.LinkedHashMap instances and garbage collected automatically 
 ```
 
 ```forth
+10 1 -2 ... \ creates a range from 10 downto 2 by 2
+```
+
+
+```forth
 \ adds 5 to the end of the list
 [ 1 2 3 4 ] dup 5 add
 ```
