@@ -153,10 +153,31 @@ The `->` and `=>` words can be used anywhere within a word, including loop bodie
   count @ ;
 ```
 
+### Implementation notes
+
+Local variable support is implemented in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. At runtime they load the top of the stack into the proper location of the parameter stack. The *lookup word* gets the value or the reference from the parameter stack and pushes it onto the data stack.
+
 ## List
+
+
+`<list>` \ creates a new empty list
+
+`<list> dup 1 add` \ creates an empty list and adds *1* to it.
+
+`[ 1 2 3 ]` \ creates a list with 3 elements.
+
 
 ## Maps
 
+
+`<map>` \ creates a new empty map
+
+`<map> dup 'key1' 'value1' put` \ creates an empty map and puts *'key1' => 'value1'* into it.
+
+`#[ 'key1' 'value1' ]#` \ same as above
+
 ## Quotations
+
+`{ dup * }` \ creates a quotation
 
 ## HTTP
