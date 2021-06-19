@@ -155,7 +155,42 @@ The `->` and `=>` words can be used anywhere within a word, including loop bodie
 
 ### Implementation notes
 
-Local variable support is implemented in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. At runtime they load the top of the stack into the proper location of the parameter stack. The *lookup word* gets the value or the reference from the parameter stack and pushes it onto the data stack.
+Local variable support is implemented in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. At runtime they load the top of the stack into the proper location of the parameter stack. At runtime, the *lookup word* gets the value (or the reference) from the parameter stack and pushes it onto the data stack.
+
+## Quotations
+
+```forth
+`{ dup * }` \ creates a quotation
+```
+
+A quotations is an anonymous word that contain a snippet of code and its evaluation is delayed until it's called (with `yield`).
+
+```forth
+{ 'hello world' . } \ quotation pushes its address to the data stack
+yield               \ calls the quotation
+```
+
+```forth
+{ 'hello' . } 10 times
+```
+
+A quotation can access to local variables of the enclosing word and have its own local variables as well.
+
+```forth
+
+: tst ( -- n ) 
+  0 => sum
+  [ 1 2 3 4 5 ] { -> item sum @ item + sum ! } each 
+  sum @ ;
+```
+
+Local variables are lexically scoped. If the quotation is called by another word, the `sum` still denotes the variable that was defined in the context where the quotation was originally created.
+
+Quotations don't act as lexical closures however. The parameter stack is unwinded after the enclosing function is returned.
+
+### Implementation notes
+
+The quotation code is compiled into the enclosing word and bypassed by a jump. At runtime the quotation pushes its address as well as a stack frame to the stack. The word `yield` calls the address like a normal word and sets the parameter stack pointer to the quotation's stack frame.
 
 ## List
 
@@ -176,8 +211,5 @@ Local variable support is implemented in FCL itself. Locals are stored in a para
 
 `#[ 'key1' 'value1' ]#` \ same as above
 
-## Quotations
-
-`{ dup * }` \ creates a quotation
 
 ## HTTP
