@@ -131,13 +131,27 @@ Control structres are compile time words with no interpretation semantics.
 
 There are two types of locals in FCL. Local constant `->` and local variable `=>`.
 
-`-> name` loads the top of the stack into the local, called `name`.
+`-> a` loads the top of the stack into the local, called `a`.
 
-`name` pushes the value of the local.
+`a` pushes the value of the local.
 
-`=> name` loads the top of the stack into the local, called `name`.
+`=> b` loads the top of the stack into the local variable, called `b`.
 
-`name` pushes the reference of the local. `name @` pushes the value of the local.
+`b` pushes the reference of the local. `b @` pushes the value of the local.
+
+The `->` and `=>` words can be used anywhere within a word, including loop bodies and quotations. You can initialize a local (`0 -> a`) within the word or use the data that was supplied on the call site (`-> a`).
+
+```
+: count-even ( n -- c )
+  -> n 0 => count
+  n 0 do
+    i 2 /mod -> quotient -> remainder
+    remainder 0 = if
+      count inc
+    then
+  loop
+  count @ ;
+```
 
 ## List
 
