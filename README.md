@@ -120,12 +120,28 @@ For example:
 
 Control structres are compile time words with no interpretation semantics.
 
-
 ## Locals
 
-## Maps
+```
+: example ( a b -- n )
+  -> b -> a 42 -> c 0 => d
+  a b + c * d !
+  d @ ;
+```
+
+There are two types of locals in FCL. Local constant `->` and local variable `=>`.
+
+`-> name` loads the top of the stack into the local, called `name`.
+
+`name` pushes the value of the local.
+
+`=> name` loads the top of the stack into the local, called `name`.
+
+`name` pushes the reference of the local. `name @` pushes the value of the local.
 
 ## List
+
+## Maps
 
 ## Quotations
 
