@@ -220,15 +220,18 @@ Lists are java.util.LinkedHashMap instances and garbage collected automatically 
 ## Collection operations
 
 ```forth
-[ 1 2 3 4 ] { . } each \ iterets through the list and calls the quotation on each element
+\ iterets through the list and calls the quotation on each element
+[ 1 2 3 4 ] { . } each 
 ```
 
 ```forth
-[ 1 2 3 4 ] { odd? } filter \ selects only the odd items from the list [ 1 3 ]
+\ selects only the odd items from the list [ 1 3 ]
+[ 1 2 3 4 ] { odd? } filter 
 ```
 
 ```forth
-[ 1 2 3 4 ] { dup * } map \ transforms the list to a new list that contain the squares of the original items [ 1 4 9 16 ]
+\ transforms the list to a new list that contain the squares of the original items [ 1 4 9 16 ]
+[ 1 2 3 4 ] { dup * } map
 ```
 
 ```forth
