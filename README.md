@@ -5,7 +5,7 @@ FCL is the programming language of an Android app called Forth Calculator. It is
 ```forth
 : fib ( n1 n2 -- n1 n2 n3 ) 2dup + ;
 
-: nfib ( n -- .. ) -> n ( local variable )
+: nfib ( n -- n* ) -> n ( local variable )
   0 1 { fib } n times ; ( quotation )
 ```
 
@@ -103,7 +103,7 @@ For example:
 ##### while loop
 
 ```forth
-begin .. <bool> while <loop-body> repeat
+begin <bool-exp> while <loop-body> repeat
 ```
 For example:
 ```forth
