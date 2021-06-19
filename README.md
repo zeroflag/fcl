@@ -266,5 +266,14 @@ Lists are java.util.LinkedHashMap instances and garbage collected automatically 
 alist clear \ removes all items from the list
 ```
 
+## High level control structures
+
+Quotations combined with the collection API offers some high level control structures.
+
+```forth
+1 .. 10 {
+  dup * .
+} each
+```
 
 ## HTTP
