@@ -235,7 +235,7 @@ Lists are java.util.LinkedHashMap instances and garbage collected automatically 
 ```
 
 ```forth
-1 5 upto \ creates a list like [ 1 2 3 4 ]
+1 5 .. \ creates a range from 1 to 5
 ```
 
 ```forth
