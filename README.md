@@ -194,6 +194,7 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 
 ## List
 
+A list is a dynamic, ordered data structed.
 
 `<list>` \ creates a new empty list
 
@@ -201,8 +202,11 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 
 `[ 1 2 3 ]` \ creates a list with 3 elements.
 
+Lists are java.util.ArrayList instances and garbage collected automatically by the host language.
 
 ## Maps
+
+Maps contain key value pairs.
 
 
 `<map>` \ creates a new empty map
@@ -211,5 +215,24 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 
 `#[ 'key1' 'value1' ]#` \ same as above
 
+Lists are java.util.LinkedHashMap instances and garbage collected automatically by the host language.
+
+## Collection operations
+
+```forth
+[ 1 2 3 4 ] { . } each \ iterets through the list and calls the quotation on each element
+```
+
+```forth
+[ 1 2 3 4 ] { odd? } filter \ selects only the odd items from the list [ 1 3 ]
+```
+
+```forth
+[ 1 2 3 4 ] { dup * } map \ transforms the list to a new list that contain the squares of the original items [ 1 4 9 16 ]
+```
+
+```forth
+1 5 upto \ creates a list like [ 1 2 3 4 ]
+```
 
 ## HTTP
