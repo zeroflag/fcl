@@ -238,4 +238,28 @@ Lists are java.util.LinkedHashMap instances and garbage collected automatically 
 1 5 upto \ creates a list like [ 1 2 3 4 ]
 ```
 
+```forth
+\ adds 5 to the end of the list
+[ 1 2 3 4 ] dup 5 add
+```
+
+
+```forth
+\ prepends 0 to the beginning of the list
+[ 1 2 3 4 ] dup 0 prep
+```
+
+```forth
+[ 1 2 3 ] size \ gets the size of the list
+```
+
+```forth
+[ 1 2 3 4 ] 2 at \ gets the second item of the list ( indexing is zero based )
+```
+
+```forth
+alist clear \ removes all items from the list
+```
+
+
 ## HTTP
