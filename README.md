@@ -160,7 +160,7 @@ Local variable support is implemented in FCL itself. Locals are stored in a para
 ## Quotations
 
 ```forth
-`{ dup * }` \ creates a quotation
+{ dup * } \ creates a quotation
 ```
 
 A quotations is an anonymous word that contain a snippet of code and its evaluation is delayed until it's called (with `yield`).
