@@ -15,7 +15,7 @@ The syntax is a superset of the Forth language. In FCL there are literal syntax 
 
 ## Low-level control structures
 
-FCL supports the traditional Forth conditional and loop control structures.
+FCL supports the traditional Forth conditionals and loops.
 
 General form of `if else then`.
 
@@ -66,7 +66,7 @@ The `limit` and `start` before the word `do` defines the number of times the loo
 <limit> <start> do <loop-body> loop
 ```
 
-*Do* loops iterate through integers by starting at *start* and incrementing until you reach the *limit*. The word *i* pushes the loop index onto the stack. In a nested loop, the inner loop may access the loop variable of the outer loop by using the word *j*.
+*DO* loops iterate through integers by starting at *start* and incrementing until you reach the *limit*. The word *i* pushes the loop index onto the stack. In a nested loop, the inner loop may access the loop variable of the outer loop by using the word *j*.
 
 For example:
 ```forth
@@ -182,7 +182,7 @@ A quotation can access to local variables of the enclosing word and have its own
   sum @ ;
 ```
 
-Local variables are lexically scoped. If the quotation is called by another word, the `sum` still denotes the variable that was defined in the context where the quotation was originally created.
+Local variables are lexically scoped. If the quotation is called by another word, the `sum` still denotes the variable that was defined in the quotation's context.
 
 Quotations don't act as lexical closures however. The parameter stack is unwinded after the enclosing function is returned.
 
