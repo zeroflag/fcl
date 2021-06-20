@@ -25,7 +25,7 @@ General form of `if else then`.
 
 For example:
 ```forth
-: max ( a b -- max )
+: max ( n n -- n )
   2dup < if nip else drop then ;
 
 10 100 max . \ prints 100
@@ -45,15 +45,15 @@ The `else` part is optional.
 FCL supports switch-case like flow control logic as shown in the following example.
 
 ```forth
-: day ( n -- )
+: day ( n -- s )
   case
-    1 of print: 'Monday' endof
-    2 of print: 'Tuesday' endof
-    3 of print: 'Wednesday' endof
-    4 of print: 'Thursday' endof
-    5 of print: 'Friday' endof
-    6 of print: 'Saturday' endof
-    7 of print: 'Sunday' endof
+    1 of 'Monday' endof
+    2 of 'Tuesday' endof
+    3 of 'Wednesday' endof
+    4 of 'Thursday' endof
+    5 of 'Friday' endof
+    6 of 'Saturday' endof
+    7 of 'Sunday' endof
     drop 'Unknown'
   endcase ;
 ````
