@@ -209,27 +209,48 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 A list is a dynamic, ordered data structed.
 
 ```forth
-<list> \ creates a new empty list```
+<list> \ creates a new empty list
+```
 
-`<list> dup 1 add \ creates an empty list and adds 1 to it`
+```forth
+<list> dup 1 add \ creates an empty list and adds 1 to it
+```
 
-`[ 1 2 3 ] \ creates a list with 3 elements`
+```forth
+[ 1 2 3 ] \ creates a list with 3 elements
+```
 
-`[ 1 2 3 ] peel \ unloads the items from the list to the data stack`
+```forth
+[ 1 2 3 ] peel \ unloads the items from the list to the data stack
+```
   
-`1 2 3 4 5 <list*> \ loads all items from the stack into a list`
+```forth
+1 2 3 4 5 <list*> \ loads all items from the stack into a list
+```
   
-`[ 1 2 3 ] 0 at \ returns the first item of the list`
+```forth
+[ 1 2 3 ] 0 at \ returns the first item of the list
+```
 
-`[ 1 2 3 ] 0 remove-at \ removes the first item from the list`
+```forth
+[ 1 2 3 ] 0 remove-at \ removes the first item from the list
+```
   
-`[ 1 'abc' 3 ] 'abc remove \ removes 'abc' from the list`
+```forth
+[ 1 'abc' 3 ] 'abc remove \ removes 'abc' from the list
+```
 
-`[ 1 'abc' 3 ] index-of \ returns the index of 'abc'`  
+```forth
+[ 1 'abc' 3 ] index-of \ returns the index of 'abc'
+```  
  
-`[ 1 2 ] [ 3 4 ] concat \ creates a new list with the first concatenated to the second`  
+```forth
+[ 1 2 ] [ 3 4 ] concat \ creates a new list with the first concatenated to the second
+```  
   
-`[ 1 2 3 4 ] 1 3 sublst \ gets a sublist from the original from 1 (inclusive) to 3 (exclusive)`  
+```forth
+[ 1 2 3 4 ] 1 3 sublst \ gets a sublist from the original from 1 (inclusive) to 3 (exclusive)
+```  
   
 ### Implementation notes
 
