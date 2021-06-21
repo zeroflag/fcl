@@ -15,7 +15,7 @@ The syntax is a superset of the Forth language. In FCL there are literal syntax 
 
 ## Low-level control structures
 
-FCL supports the traditional Forth conditionals (`if` and `case`) and loops (`do`, `while`, `until`). These are immediate words whose compilation semantics are to append the proper JUMP primitives to the current definition. FCL compiles high level threaded code, where executiontokens are method references of host language (Java).
+FCL supports the traditional Forth conditionals (`if` and `case`) and loops (`do`, `while`, `until`). These are immediate words whose compilation semantics are to append the proper JUMP primitives to the current definition. FCL compiles high level threaded code, where execution tokens are method references of host language (Java).
 
 General form of `if else then`.
 
