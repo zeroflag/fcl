@@ -208,7 +208,7 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 
 A list is a dynamic, ordered data structed.
 
-`<list>` \ creates a new empty list`
+`<list> \ creates a new empty list`
 
 `<list> dup 1 add \ creates an empty list and adds *1* to it.`
 
