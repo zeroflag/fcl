@@ -204,6 +204,10 @@ Quotations don't act as lexical closures however. The parameter stack is unwinde
 
 The quotation code is compiled into the enclosing word and bypassed by a jump. At runtime the quotation pushes its address as well as a stack frame to the stack. The word `yield` calls the address like a normal word and sets the parameter stack pointer to point to the quotation's stack frame.
 
+## Strings
+
+
+
 ## List
 
 A list is a dynamic, ordered data structed.
@@ -261,11 +265,38 @@ Lists are java.util.ArrayList instances and garbage collected automatically by t
 Maps contain key value pairs.
 
 
-`<map>` \ creates a new empty map
+```forth
+<map> \ creates a new empty map
+```
 
-`<map> dup 'key1' 'value1' put` \ creates an empty map and puts *'key1' => 'value1'* into it.
+```forth
+<map> dup 'key1' 'value1' put \ creates an empty map and puts *'key1' => 'value1'* into it.
+```
 
-`#[ 'key1' 'value1' ]#` \ same as above
+```forth
+'key1' 'value1' <map*> \ creates a new map and loads all items from the stack into it. There must be an even number of items on the stack.
+```
+
+```forth
+#[ 'a' 1 'b' 2 ]# peel \ unloads all items from the map to the stack
+```
+
+
+```forth
+#[ 'key1' 'value1' ]# \ creates a map with key and value
+```
+
+```forth
+#[ 'a' 1 'b' 2 ]# keys \ returns the keys from the map
+```
+
+```forth
+#[ 'a' 1 'b' 2 ]# values \ returns the values from the map
+```
+
+```forth
+#[ 'a' 1 'b' 2 ]# 'b' remove \ removes 'b'->2 from the map
+```
 
 Lists are java.util.LinkedHashMap instances and garbage collected automatically by the host language.
 
