@@ -225,7 +225,7 @@ A list is a dynamic, ordered data structed.
 ```
   
 ```forth
-1 2 3 4 5 <list*> \ loads all items from the stack into a list
+1 2 3 4 5 <list*> \ creates a new list and loads all items from the stack into it
 ```
   
 ```forth
