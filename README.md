@@ -210,7 +210,7 @@ A list is a dynamic, ordered data structed.
 
 `<list> \ creates a new empty list`
 
-`<list> dup 1 add \ creates an empty list and adds *1* to it.`
+`<list> dup 1 add \ creates an empty list and adds 1 to it.`
 
 `[ 1 2 3 ] \ creates a list with 3 elements.`
 
