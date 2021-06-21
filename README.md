@@ -11,11 +11,11 @@ Besides all the high-level features, FCL supports the traditional Forth programm
 
 ## The Syntax
 
-The syntax is a superset of the Forth language. In FCL there are literal syntax for creaing Lists `[ 1 2 3 ]`, Maps `#[ 'key' 'value' ]#`, Quotations `{ dup + }` and Strings `'Hello World'`.
+The syntax is a superset of the Forth language. In FCL there are literal syntax for creaing Lists `[ 1 2 3 ]`, Maps `#[ 'key' 'value' ]#`, Quotations `{ dup + }`,  Strings `'Hello World'`, and Ranges `1 10 ..`.
 
 ## Low-level control structures
 
-FCL supports the traditional Forth conditionals and loops.
+FCL supports the traditional Forth conditionals (`if` and `case`) and loops (`do`, `while`, `until`). These are immediate words whose compilation semantics are to append the proper JUMP primitives to the current definition. FCL compiles high level threaded code, where executiontokens are method references of host language (Java).
 
 General form of `if else then`.
 
@@ -127,17 +127,23 @@ Control structres are compile time words with no interpretation semantics.
   d @ ;
 ```
 
+You can load the top of the stack to a local by either using `->` or `=>`. The name after the arrow denotes the name of the local and its value comes from the data stack.
+
 There are two types of locals in FCL. Local constant `->` and local variable `=>`.
 
 `-> a` loads the top of the stack into the local, called `a`.
 
-`a` pushes the value of the local.
+Using `a` anywhere inside the word will push the value of the local.
 
 `=> b` loads the top of the stack into the local variable, called `b`.
 
-`b` pushes the reference of the local. `b @` pushes the value of the local.
+`b` pushes the address of the local. `b @` pushes the value of the local. You can use the `!` word to change the value of the local variable.
 
 The `->` and `=>` words can be used anywhere within a word, including loop bodies and quotations. You can initialize a local (`0 -> a`) within the word or use the data that was supplied on the call site (`-> a`).
+
+The locals are only accessible by the current word or a quotation which was defined within the word.
+
+For example, here we load first parameter into `n` and initialize a local varialbe, called `count` to zero.
 
 ```
 : count-even ( n -- c )
@@ -151,9 +157,15 @@ The `->` and `=>` words can be used anywhere within a word, including loop bodie
   count @ ;
 ```
 
+In the loop body we use two more locals to name the outut of the `/mod` which returns both the `quotient` and the `remainder` of a divide operation. We keep updating the `count` and in the end, we return its value.
+
 ### Implementation notes
 
-Local variable support is implemented in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. At runtime they load the top of the stack into the proper location of the parameter stack. At runtime, the *lookup word* gets the value (or the reference) from the parameter stack and pushes it onto the data stack.
+Local variable support is implemented in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. The lookup word is removed from the dictionary after the compilation is finished.
+
+At runtime they load the top of the stack into the proper location of the parameter stack which is associated to the current local.
+
+The *lookup word* gets the value (or the address) from the parameter stack and pushes it onto the data stack. The `exit` and `;` words are redefined so that they unwind the parameter stack at return.
 
 ## Quotations
 
@@ -161,10 +173,10 @@ Local variable support is implemented in FCL itself. Locals are stored in a para
 { dup * } \ creates a quotation
 ```
 
-A quotations is an anonymous word that contain a snippet of code and its evaluation is delayed until it's called (with `yield`).
+A quotations is an anonymous word that contain a snippet of code and its evaluation is delayed until it is called by the word `yield`.
 
 ```forth
-{ 'hello world' . } \ quotation pushes its address to the data stack
+{ 'hello world' . } \ quotation pushes its address (plus a parameter stack adddress) to the data stack
 yield               \ calls the quotation
 ```
 
@@ -182,13 +194,15 @@ A quotation can access to local variables of the enclosing word and have its own
   sum @ ;
 ```
 
+Here the quotation is called by the word `each` not by `tst`. It can still access to `sum` as it maintains the same stack frame as `tst`.
+
 Local variables are lexically scoped. If the quotation is called by another word, the `sum` still denotes the variable that was defined in the quotation's context.
 
 Quotations don't act as lexical closures however. The parameter stack is unwinded after the enclosing function is returned.
 
 ### Implementation notes
 
-The quotation code is compiled into the enclosing word and bypassed by a jump. At runtime the quotation pushes its address as well as a stack frame to the stack. The word `yield` calls the address like a normal word and sets the parameter stack pointer to the quotation's stack frame.
+The quotation code is compiled into the enclosing word and bypassed by a jump. At runtime the quotation pushes its address as well as a stack frame to the stack. The word `yield` calls the address like a normal word and sets the parameter stack pointer to point to the quotation's stack frame.
 
 ## List
 
