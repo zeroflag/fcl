@@ -298,6 +298,8 @@ Maps contain key value pairs.
 #[ 'a' 1 'b' 2 ]# 'b' remove \ removes 'b'->2 from the map
 ```
 
+## Implementation notes
+
 Lists are java.util.LinkedHashMap instances and garbage collected automatically by the host language.
 
 ## Collection operations
