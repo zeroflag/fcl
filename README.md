@@ -259,7 +259,7 @@ Strings are surrounded by single quotes and they're immutable. For example `'Hel
 
 ## List
 
-A list is a dynamic, ordered data structed.
+A list is a dynamic, ordered data structed. `[` and `]` are Forth words, so a whitespace between them and the elements are significant.
 
 ```forth
 <list> \ creates a new empty list
@@ -305,8 +305,8 @@ A list is a dynamic, ordered data structed.
 [ 1 2 3 4 ] 1 3 sublst \ gets a sublist from the original from 1 (inclusive) to 3 (exclusive)
 ```  
   
-```
-[ 1 2 3 ] 2 * \ basic arithmetic with scalars work with lists, this will multiple each item with 2.]
+```forth
+[ 1 2 3 ] 2 * \ basic arithmetic with scalars work with lists, this will multiple each item with 2.
 ```
   
 ### Implementation notes
