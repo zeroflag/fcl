@@ -305,6 +305,10 @@ A list is a dynamic, ordered data structed.
 [ 1 2 3 4 ] 1 3 sublst \ gets a sublist from the original from 1 (inclusive) to 3 (exclusive)
 ```  
   
+```
+[ 1 2 3 ] 2 * \ basic arithmetic with scalars work with lists, this will multiple each item with 2.]
+```
+  
 ### Implementation notes
 
 Lists are java.util.ArrayList instances and garbage collected automatically by the host language.
