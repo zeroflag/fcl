@@ -237,7 +237,7 @@ A list is a dynamic, ordered data structed.
 ```
   
 ```forth
-[ 1 'abc' 3 ] 'abc remove \ removes 'abc' from the list
+[ 1 'abc' 3 ] 'abc` remove \ removes 'abc' from the list
 ```
 
 ```forth
