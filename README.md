@@ -157,7 +157,7 @@ For example, here we load first parameter into `n` and initialize a local varial
   count @ ;
 ```
 
-In the loop body we use two more locals to name the outut of the `/mod` which returns both the `quotient` and the `remainder` of a divide operation. We keep updating the `count` and in the end, we return its value.
+In the loop body we use two more locals to name the output of the `/mod` which returns both the `quotient` and the `remainder` of a divide operation. We keep updating the `count` and in the end, we return its value.
 
 ### Implementation notes
 
