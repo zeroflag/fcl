@@ -208,11 +208,12 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 
 A list is a dynamic, ordered data structed.
 
-`<list> \ creates a new empty list`
+```forth
+<list> \ creates a new empty list```
 
-`<list> dup 1 add \ creates an empty list and adds 1 to it.`
+`<list> dup 1 add \ creates an empty list and adds 1 to it`
 
-`[ 1 2 3 ] \ creates a list with 3 elements.`
+`[ 1 2 3 ] \ creates a list with 3 elements`
 
 `[ 1 2 3 ] peel \ unloads the items from the list to the data stack`
   
