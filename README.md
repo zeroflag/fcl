@@ -208,51 +208,51 @@ The quotation code is compiled into the enclosing word and bypassed by a jump. A
 
 Strings are surrounded by single quotes and they're immutable. For example `'Hello world'`.
 
-```
+```forth
 'hello world' 0 5 substr \ gets the characters from 0 to 5 (exclusive)
 ```
 
-```
+```forth
 'hello world' 1 at \ gets the first character (as a string)
 ```
 
-```
+```forth
 'hello' upper \ gets the upper case version of hello
 ```
 
-```
+```forth
 'HELLO' lower \ gets the lower case version of hello
 ```
 
-```
+```forth
 '  xx  ' trim \ removes the leading and trailing spaces from the string 
 ```
 
-```
+```forth
 'abcd' 'bc' index-of \ finds the substring and returns its index, or -1 if not found
 ```
 
-```
+```forth
 'abcxxdepkcxxk' 'xx' 'yyy' replace \ replace all occurances of 'xx' to 'yyy (the substring is a regexp)
 ```
 
-```
+```forth
 'af' '123' concat \ concatenates two strings
 ```
 
-```
+```forth
 'hello world' ' ' split \ splits the strings into parts by the separator string
 ```
 
-```
+```forth
 123 >str \ conversts the number into a string
 ```
 
-```
+```forth
 "[ 1 'xx' ] 'a=%d b=%s' format" \ creates a string using the given format by substituting the parts in place of the format characters. 
 ```
 
-```
+```forth
 'ab' 3 * \ copies the string n times
 ```
 
