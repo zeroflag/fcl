@@ -331,7 +331,7 @@ Maps contain key value pairs.
 ```
 
 ```forth
-#[ 'a' 1 'b' 2 ]# peel \ unloads all items from the map to the stack
+#[ 'a' 1 'b' 2 ]# peel# \ unloads all items from the map to the stack
 ```
 
 
