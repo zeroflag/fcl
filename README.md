@@ -202,7 +202,7 @@ Quotations don't act as lexical closures however. The parameter stack is unwinde
 
 ### Implementation notes
 
-The quotation code is compiled into the enclosing word and bypassed by a jump. At runtime the quotation pushes its address as well as a stack frame to the stack. The word `yield` calls the address like a normal word and sets the parameter stack pointer to point to the quotation's stack frame. Quotations are [implemented]((src/main/res/raw/quotations.forth)) in fcl.
+The quotation code is compiled into the enclosing word and bypassed by a jump. At runtime the quotation pushes its address as well as a stack frame to the stack. The word `yield` calls the address like a normal word and sets the parameter stack pointer to point to the quotation's stack frame. Quotations are [implemented](src/main/res/raw/quotations.forth) in fcl.
 
 ## Strings
 
