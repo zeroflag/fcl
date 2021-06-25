@@ -161,7 +161,7 @@ In the loop body we use two more locals to name the output of the `/mod` which r
 
 ### Implementation notes
 
-Local variable support is [implemented](main/src/main/res/raw/locals.forth) in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. The lookup word is removed from the dictionary after the compilation is finished.
+Local variable support is [implemented](src/main/res/raw/locals.forth) in FCL itself. Locals are stored in a parameter stack. Both `->` and `=>` are immediate parsing words. They have both runtime and compilation semantics. They compile an inline *lookup word* within the enclosing word. The lookup word is removed from the dictionary after the compilation is finished.
 
 At runtime they load the top of the stack into the proper location of the parameter stack which is associated to the current local.
 
