@@ -2,9 +2,7 @@ package com.vectron.fcl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-// import com.vectron.forthcalc.domain.ports.FileStore;
 import com.vectron.fcl.types.Obj;
-import com.vectron.fcl.FclTypeAdapter;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -77,8 +75,6 @@ public class FclStack {
         Collections.reverse(stack);
     }
 
-// TODO
-/*
     public void load(FileStore fileStore, String id) {
         FileInputStream stream = null;
         try {
@@ -107,5 +103,4 @@ public class FclStack {
     private String fileName(String id) {
         return String.format("stack%s.json", id);
     }
-*/
 }

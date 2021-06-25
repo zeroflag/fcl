@@ -1,8 +1,5 @@
 package com.vectron.fcl;
 
-import com.vectron.fcl.Fcl;
-import com.vectron.fcl.FclStack;
-import com.vectron.fcl.RamTranscript;
 import com.vectron.fcl.exceptions.Aborted;
 import com.vectron.fcl.exceptions.NotUnderstood;
 import com.vectron.fcl.exceptions.TypeMismatched;
