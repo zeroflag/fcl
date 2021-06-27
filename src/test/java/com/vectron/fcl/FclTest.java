@@ -782,6 +782,7 @@ public class FclTest {
         assertEquals(3, evalPop("m size").intValue());
         assertEquals(1, evalPop("m 'a' at").intValue());
         assertEquals("b", evalPop("m 2 at").asStr().value());
+        assertEquals("#[ 'x' 'y' ]#", evalPop("<map> dup [ 'x' 'y' ] add").toString());
         assertEquals(false, evalPop("m true at").boolValue());
         assertEquals(Nil.INSTANCE, evalPop("m 'nosuch' at"));
         assertEquals(0, evalPop("m clear m size").intValue());

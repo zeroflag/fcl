@@ -1,5 +1,6 @@
 package com.vectron.fcl.types;
 
+import com.vectron.fcl.exceptions.Aborted;
 import com.vectron.fcl.exceptions.TypeMismatched;
 
 import java.util.Iterator;
@@ -80,6 +81,13 @@ public class Dic implements Obj {
 
     public void put(Obj key, Obj value) {
         this.value.put(key, value);
+    }
+
+    public void append(Obj lst) {
+        if (lst instanceof Lst && ((Lst)lst).size() == 2)
+            this.value.put(((Lst)lst).at(new Num(0)), ((Lst)lst).at(new Num(1)));
+        else
+            throw new Aborted("Expected list of size 2 when adding to a map, got: " + lst);
     }
 
     public Obj at(Obj key) {
