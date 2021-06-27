@@ -2,6 +2,7 @@ package com.vectron.fcl.interop;
 
 import com.vectron.fcl.FclStack;
 import com.vectron.fcl.exceptions.InterOpFailed;
+import com.vectron.fcl.types.Bool;
 import com.vectron.fcl.types.JvmObj;
 import com.vectron.fcl.types.Obj;
 
@@ -29,6 +30,15 @@ public class JvmInterOp {
                 methodName,
                 receiver instanceof JvmObj ? ((JvmObj) receiver).value() : receiver);
         spec.invoke(stack);
+    }
+
+    public void jvmHasMethod() {
+        String methodName = stack.pop().asStr().value();
+        Obj receiver = stack.pop();
+        MethodSpec spec = MethodSpec.parseDynamic(
+                methodName,
+                receiver instanceof JvmObj ? ((JvmObj) receiver).value() : receiver);
+        stack.push(spec.exists() ? Bool.TRUE : Bool.FALSE);
     }
 
     public void jvmStaticVar() {

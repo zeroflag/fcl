@@ -71,6 +71,20 @@ class MethodSpec {
         }
     }
 
+    public boolean exists() {
+        List<Class<?>> types = new ArrayList<>();
+        for (int i = 0; i < arity; i++) {
+            Class<?> clazz = typeOf(typeSpec.charAt(i));
+            types.add(clazz);
+        }
+        try {
+            clazz.getMethod(methodName, types.toArray(new Class[0]));
+            return true;
+        } catch (ReflectiveOperationException e) {
+            return false;
+        }
+    }
+
     public static void processResult(Object result, FclStack stack) {
         if (result != null) {
             if (result instanceof Number)

@@ -350,6 +350,7 @@ public class Fcl {
         addPrimitive(".", () -> show(stack.pop()));
         addPrimitive("jvm-call-static", interOp::jvmCallStatic);
         addPrimitive("jvm-call-method", interOp::jvmCallMethod);
+        addPrimitive("jvm-has-method", interOp::jvmHasMethod);
         addPrimitive("jvm-static-var", interOp::jvmStaticVar);
         addPrimitive("jvm-null", () -> stack.push(null));
         addPrimitive("asc*", this::sortAsc);

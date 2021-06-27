@@ -26,6 +26,7 @@ import static com.vectron.fcl.types.Bool.TRUE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -391,6 +392,12 @@ public class FclTest {
         assertEquals(1.5430, evalPop("1 cosh").doubleValue(), 0.001);
         assertEquals(0.7616, evalPop("1 tanh").doubleValue(), 0.001);
         assertEquals(1, evalPop("1.3 'intValue' jvm-call-method").doubleValue(), 0.01);
+        assertFalse(evalPop("1.3 'nosuch' jvm-has-method").boolValue());
+        assertTrue(evalPop("1.3 'round' jvm-has-method").boolValue());
+        assertTrue(evalPop("[ 1 2 ] 'iterator' jvm-has-method").boolValue());
+        assertTrue(evalPop("[ 1 2 ] 'append/O' jvm-has-method").boolValue());
+        assertFalse(evalPop("[ 1 2 ] 'append/i' jvm-has-method").boolValue());
+        assertFalse(evalPop("[ 1 2 ] 'append/OO' jvm-has-method").boolValue());
     }
 
     @Test
@@ -1122,6 +1129,7 @@ public class FclTest {
     public void testHist() {
         assertEquals("#[ 'a' 2 'b' 3 'c' 1 ]#", evalPop("'ababbc' hist").toString());
         assertEquals("#[  ]#", evalPop("'' hist").toString());
+        assertEquals("#[  ]#", evalPop("12 hist").toString());
     }
 
     private String transcript() {

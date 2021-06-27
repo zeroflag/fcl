@@ -1,4 +1,7 @@
 : hist ( c -- m )
+    dup 'iterator' jvm-has-method not if
+        drop #[ ]# exit
+    then
     <map> -> tbl {
        -> elem
        tbl elem at -> count
