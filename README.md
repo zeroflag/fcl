@@ -422,7 +422,7 @@ Quotations combined with the collection API offers some high level control struc
 ### Controlling a Daikin Air Conditioner
 
 ```forth
-: cool ( temperature -- http-code response )
+: cool ( temperature -- response http-code )
   -> tp
   #[
     'pow'    tp 0 = if 0 else 1 then
@@ -437,3 +437,20 @@ Quotations combined with the collection API offers some high level control struc
 ;
 ```
 
+```forth
+: ac? ( -- map )
+  <map> -> out
+  'http://192.168.0.25/aircon/get_control_info'
+  http-get
+  dup 200 = if
+    drop ',' split { -> row
+      row '=' split
+      dup size 2 = if
+        out swap add
+      else
+        drop
+      then
+    } each
+    out
+  then ;
+```
