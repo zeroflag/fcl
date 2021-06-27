@@ -444,11 +444,7 @@ Quotations combined with the collection API offers some high level control struc
   dup 200 = if
     drop ',' split 
     {
-      '=' split dup size 2 = if
-        out swap add
-      else
-        drop
-      then
+      '=' split dup size 2 = if out swap add else drop then
     } each
     out
   then ;
