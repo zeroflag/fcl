@@ -9,6 +9,7 @@ import com.vectron.fcl.types.Num;
 import com.vectron.fcl.types.Obj;
 import com.vectron.fcl.types.Str;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,8 @@ class MethodSpec {
             Object result = method.invoke(receiver, params.toArray(new Object[0]));
             if (!method.getReturnType().getSimpleName().equals("void"))
                 processResult(result, stack);
+        } catch (InvocationTargetException e) {
+            throw new InterOpFailed(e.getCause() != null ? e.getCause() : e);
         } catch (ReflectiveOperationException e) {
             throw new InterOpFailed(e);
         }

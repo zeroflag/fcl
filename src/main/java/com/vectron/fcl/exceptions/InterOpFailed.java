@@ -1,7 +1,7 @@
 package com.vectron.fcl.exceptions;
 
 public class InterOpFailed extends FclException {
-    public InterOpFailed(Exception e) {
+    public InterOpFailed(Throwable e) {
         super(e);
     }
 
