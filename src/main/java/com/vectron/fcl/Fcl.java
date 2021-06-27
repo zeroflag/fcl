@@ -16,6 +16,9 @@ import com.vectron.fcl.types.Word;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class Fcl {
@@ -364,6 +367,13 @@ public class Fcl {
         addPrimitive("var:", () -> { String name = word(); dict.add(new Var(dp, name)); dp++; });
         addPrimitive("val:", () -> { String name = word(); dict.add(new Val(name, stack.pop())); });
         addPrimitive("abort", () -> { throw new Aborted(stack.pop().asStr().value()); });
+        addPrimitive("words", () -> {
+            List<String> words = new ArrayList(wordList());
+            Collections.sort(words);
+            for (String each : words) {
+                transcript.show(each);
+                transcript.cr();
+        }});
         addPrimitive("exec", () -> {
             rstack.push(new Num(ip));
             innerLoop(pop().intValue());
