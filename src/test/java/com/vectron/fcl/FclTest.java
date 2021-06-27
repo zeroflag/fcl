@@ -1118,6 +1118,12 @@ public class FclTest {
         assertEquals(30, fcl.pop().intValue());
     }
 
+    @Test
+    public void testHist() {
+        assertEquals("#[ 'a' 2 'b' 3 'c' 1 ]#", evalPop("'ababbc' hist").toString());
+        assertEquals("#[  ]#", evalPop("'' hist").toString());
+    }
+
     private String transcript() {
         return transcript.content();
     }
