@@ -440,8 +440,8 @@ Quotations combined with the collection API offers some high level control struc
 ```forth
 : ac? ( -- map )
   <map> -> out
-  'http://192.168.0.25/aircon/get_control_info'
-  http-get dup 200 = if
+  'http://192.168.0.25/aircon/get_control_info' http-get 
+  dup 200 = if
     drop ',' split 
     {
       '=' split dup size 2 = if
