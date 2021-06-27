@@ -443,9 +443,8 @@ Quotations combined with the collection API offers some high level control struc
   'http://192.168.0.25/aircon/get_control_info' http-get 
   dup 200 = if
     drop ',' split 
-    {
-      '=' split dup size 2 = if out swap add else drop then
-    } each
+    { '=' split dup size 2 = if out swap add else drop then } 
+    each
     out
   then ;
 ```
