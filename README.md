@@ -3,6 +3,7 @@
 FCL is the programming language of an Android app called Forth Calculator. It is a Forth dialect with optional local variables, complex data structures, quotations and Java interoperability.
 
 ```forth
+\ calculates the first n+2 elements of the fibonacci sequence
 : fib ( n -- n* ) -> n     ( local variable )
   0 1 { 2dup + } n times ; ( quotation )
 ```
