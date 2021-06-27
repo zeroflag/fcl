@@ -416,3 +416,24 @@ Quotations combined with the collection API offers some high level control struc
 ```
 
 ## HTTP
+
+## Examples
+
+### Controlling a Daikin Air Conditioner
+
+```forth
+: cool ( temperature -- http-code response )
+  -> tp
+  #[
+    'pow'    tp 0 = if 0 else 1 then
+    'f_rate' 'A' ( auto fan )
+    'stemp'  tp 24 min 20 max
+    'mode'   3   ( cooling )
+    'f_dir'  0   ( fan direction )
+    'shum'   0
+  ]# 
+  'http://192.168.0.25/aircon/set_control_info'
+  http-post 
+;
+```
+
