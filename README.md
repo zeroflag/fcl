@@ -442,9 +442,8 @@ Quotations combined with the collection API offers some high level control struc
   <map> -> out
   'http://192.168.0.25/aircon/get_control_info'
   http-get dup 200 = if
-    drop ',' split { -> row
-      row '=' split
-      dup size 2 = if
+    drop ',' split {
+      '=' split dup size 2 = if
         out swap add
       else
         drop
