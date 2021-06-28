@@ -368,6 +368,7 @@ public class Fcl {
         addPrimitive("var:", () -> { String name = word(); dict.add(new Var(dp, name)); dp++; });
         addPrimitive("val:", () -> { String name = word(); dict.add(new Val(name, stack.pop())); });
         addPrimitive("abort", () -> { throw new Aborted(stack.pop().asStr().value()); });
+        addPrimitive("eval", () -> eval(stack.pop().asStr().value()));
         addPrimitive("words", () -> {
             List<String> words = new ArrayList(wordList());
             Collections.sort(words);
