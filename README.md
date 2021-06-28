@@ -417,6 +417,25 @@ Quotations combined with the collection API offers some high level control struc
 
 ## HTTP
 
+There is basic support getting an url or posting a form.
+
+```forth
+http-get ( url -- response-body http-code )
+http-get ( map url -- response-body http-code )
+```
+
+For example:
+
+```forth
+'http://some.url' http-get
+
+#[ 'year'     year
+   'month'    month
+   'day'      day
+   'cost'     1234 ]#
+'http://myhost.site/expense' http-post 
+```
+
 ## Examples
 
 ### Controlling a Daikin Air Conditioner
