@@ -410,9 +410,7 @@ alist clear \ removes all items from the list
 Quotations combined with the collection API offers some high level control structures.
 
 ```forth
-1 10 .. {
-  dup * .
-} each
+1 10 .. { dup * . } each
 ```
 
 ## HTTP
