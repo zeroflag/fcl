@@ -421,7 +421,7 @@ There is basic support getting an url or posting a form.
 
 ```forth
 http-get ( url -- response-body http-code )
-http-get ( map url -- response-body http-code )
+http-post ( map url -- response-body http-code )
 ```
 
 For example:
