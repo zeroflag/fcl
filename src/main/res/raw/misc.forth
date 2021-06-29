@@ -14,3 +14,5 @@
     tbl ;
 
 : ms ( n -- ) 'java.lang.Thread/sleep/l' jvm-call-static ;
+
+: tone ( hz ms -- ) swap 'com.vectron.forthcalc.support.Tone/play/di' jvm-call-static ;
