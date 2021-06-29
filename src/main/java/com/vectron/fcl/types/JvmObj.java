@@ -2,10 +2,37 @@ package com.vectron.fcl.types;
 
 import com.vectron.fcl.exceptions.TypeMismatched;
 
+import java.util.Collection;
+import java.util.Map;
+
 import static com.vectron.fcl.Fcl.STRICT;
 
 public class JvmObj implements Obj {
     private final Object object;
+
+    public static Obj toFcl(Object object) {
+        if (object == null)
+            return Nil.INSTANCE;
+        if (object instanceof Number)
+            return new Num((Number)object);
+        if (object instanceof CharSequence)
+            return new Str(((CharSequence)object).toString());
+        if (object instanceof Boolean)
+            return (Boolean)object ? Bool.TRUE : Bool.FALSE;
+        if (object instanceof Map) {
+            Dic result = Dic.empty();
+            for (Map.Entry<Object,Object> each : ((Map<Object,Object>) object).entrySet())
+                result.put(toFcl(each.getKey()), toFcl(each.getValue()));
+            return result;
+        }
+        if (object instanceof Collection) {
+            Lst result = Lst.empty();
+            for (Object each : (Collection) object)
+                result.append(toFcl(each));
+            return result;
+        }
+        return new JvmObj(object);
+    }
 
     public JvmObj(Object object) {
         this.object = object;
