@@ -50,6 +50,11 @@ public class Nil implements Obj {
     }
 
     @Override
+    public Object unwrap() {
+        return value();
+    }
+
+    @Override
     public int compareTo(Obj o) {
         return -1;
     }

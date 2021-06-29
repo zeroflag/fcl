@@ -48,7 +48,12 @@ public class Quot implements Obj {
     @Override
     public Object value() {
         throw new TypeMismatched(this, "value");
-     }
+    }
+
+    @Override
+    public Object unwrap() {
+        return value();
+    }
 
     @Override
     public Num asNum() {

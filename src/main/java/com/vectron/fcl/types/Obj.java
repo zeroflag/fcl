@@ -8,4 +8,5 @@ public interface Obj extends Comparable<Obj> {
     Num asNum();
     Str asStr();
     Object value();
+    Object unwrap();
 }

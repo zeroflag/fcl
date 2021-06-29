@@ -12,3 +12,5 @@
        then
     } each
     tbl ;
+
+: ms ( n -- ) 'java.lang.Thread/sleep/l' jvm-call-static ;

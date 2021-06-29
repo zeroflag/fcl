@@ -47,6 +47,14 @@ public class Lst implements Obj, ArithmeticOperand {
     }
 
     @Override
+    public Object unwrap() {
+        List<Object> result = new ArrayList<>();
+        for (Obj each : value)
+            result.add(each.unwrap());
+        return result;
+    }
+
+    @Override
     public int compareTo(Obj o) {
         return -1;
     }

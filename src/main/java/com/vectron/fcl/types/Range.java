@@ -77,6 +77,11 @@ public class Range implements Obj {
     }
 
     @Override
+    public Object unwrap() {
+        return value();
+    }
+
+    @Override
     public int compareTo(Obj o) {
         return -1;
     }

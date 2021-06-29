@@ -1139,6 +1139,16 @@ public class FclTest {
         assertEquals(42, evalPop(" ': tst 42 ; tst' eval").intValue());
     }
 
+    @Test
+    public void testHttpHeaders() {
+        assertEquals(
+                "#[ 'headers' #[ 'Content-Type' 'application/json' ]# 'content' #[ 'a' 1 ]# ]#",
+                evalPop("#[ 'a' 1 ]# +json-type").toString());
+        assertEquals(
+                "#[ 'content' #[ 'a' 1 ]# 'headers' #[ 'Content-Type' 'application/json' ]# ]#",
+                evalPop("#[ 'headers' #[ 'Content-Type' 'text/plain' ]# 'content' #[ 'a' 1 ]# ]# +json-type").toString());
+    }
+
     private String transcript() {
         return transcript.content();
     }

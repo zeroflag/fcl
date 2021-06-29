@@ -3,6 +3,7 @@ package com.vectron.fcl.interop;
 import com.vectron.fcl.FclStack;
 import com.vectron.fcl.exceptions.InterOpFailed;
 import com.vectron.fcl.types.Bool;
+import com.vectron.fcl.types.Dic;
 import com.vectron.fcl.types.JvmObj;
 import com.vectron.fcl.types.Nil;
 import com.vectron.fcl.types.Num;
@@ -114,6 +115,8 @@ class MethodSpec {
             params.add(value.doubleValue());
         else if (clazz == String.class)
             params.add((String)value.value());
+        else if (clazz == Dic.class)
+            params.add((Dic)value);
         else if (clazz == Map.class)
             params.add((Map)value.value());
         else if (clazz == List.class)
@@ -133,6 +136,7 @@ class MethodSpec {
             case 'm': return Map.class;
             case 't': return List.class;
             case 'O': return Obj.class;
+            case 'M': return Dic.class;
             default:
                 throw new InterOpFailed("Invalid type spec: " + type);
         }

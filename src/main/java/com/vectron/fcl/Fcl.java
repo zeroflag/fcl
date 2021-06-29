@@ -112,6 +112,11 @@ public class Fcl {
         }
 
         @Override
+        public Object unwrap() {
+            return value();
+        }
+
+        @Override
         public int compareTo(Obj other) {
             return other instanceof ColonDef
                     ? name.compareTo(((ColonDef) other).name)
@@ -189,6 +194,11 @@ public class Fcl {
         @Override
         public Object value() {
             return address;
+        }
+
+        @Override
+        public Object unwrap() {
+            return value();
         }
 
         @Override
@@ -271,13 +281,17 @@ public class Fcl {
         }
 
         @Override
+        public Object unwrap() {
+            return value();
+        }
+
+        @Override
         public int compareTo(Obj other) {
             return other instanceof Val
                     ? name.compareTo(((Val) other).name)
                     : -1;
         }
     }
-
 
     public Fcl(FclStack stack, int heapSize, Transcript transcript) {
         this.stack = stack;

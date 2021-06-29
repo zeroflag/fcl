@@ -47,6 +47,11 @@ public class Str implements Obj, ArithmeticOperand {
     }
 
     @Override
+    public Object unwrap() {
+        return value();
+    }
+
+    @Override
     public Str asStr() {
         return this;
     }

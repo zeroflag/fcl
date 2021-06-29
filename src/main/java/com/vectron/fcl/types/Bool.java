@@ -44,6 +44,11 @@ public class Bool implements Obj, LogicOperand {
     }
 
     @Override
+    public Object unwrap() {
+        return value();
+    }
+
+    @Override
     public long longValue() {
         if (STRICT) throw new TypeMismatched(this, "long");
         return value ? 1l : 0l;

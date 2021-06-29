@@ -252,6 +252,11 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
     }
 
     @Override
+    public Object unwrap() {
+        return value();
+    }
+
+    @Override
     public int compareTo(Obj other) {
         return other instanceof Num
                 ? Double.compare(doubleValue(), ((Num) other).doubleValue())

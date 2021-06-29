@@ -71,6 +71,11 @@ public class Primitive implements Word {
     }
 
     @Override
+    public Object unwrap() {
+        return value();
+    }
+
+    @Override
     public String toString() {
         return "xt_" + name;
     }

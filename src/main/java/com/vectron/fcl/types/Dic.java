@@ -53,6 +53,14 @@ public class Dic implements Obj {
     }
 
     @Override
+    public Map<Object,Object> unwrap() {
+        Map<Object,Object> result = new LinkedHashMap<>();
+        for (Map.Entry<Obj,Obj> each : value.entrySet())
+            result.put(each.getKey().unwrap(), each.getValue().unwrap());
+        return result;
+    }
+
+    @Override
     public int compareTo(Obj o) {
         return -1;
     }
