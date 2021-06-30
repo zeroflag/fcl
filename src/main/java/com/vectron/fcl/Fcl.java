@@ -384,7 +384,7 @@ public class Fcl {
         addPrimitive("abort", () -> { throw new Aborted(stack.pop().asStr().value()); });
         addPrimitive("eval", () -> eval(stack.pop().asStr().value()));
         addPrimitive("words", () -> {
-            List<String> words = new ArrayList(wordList());
+            List<String> words = new ArrayList<>(wordList());
             Collections.sort(words);
             for (String each : words) {
                 transcript.show(each);
