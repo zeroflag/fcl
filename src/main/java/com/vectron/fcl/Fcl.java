@@ -37,6 +37,7 @@ public class Fcl {
     private final Object[] heap;
     private int dp = SCRATCH_SIZE;
     private int ip = 0;
+    private boolean trace = false;
 
     class ColonDef implements Word {
         private final int address;
@@ -350,6 +351,7 @@ public class Fcl {
         addPrimitive("nil", () -> stack.push(Nil.INSTANCE));
         addPrimitive("here", () -> stack.push(new Num(dp)));
         addPrimitive("interpret", () -> mode = Mode.INTERPRET);
+        addPrimitive("trace", () -> trace = stack.pop().boolValue());
         addPrimitive("lit", () -> stack.push((Obj)heap[ip++]));
         addPrimitive(">r", () -> rstack.push(stack.pop()));
         addPrimitive("r>", () -> stack.push(rstack.pop()));
@@ -529,22 +531,36 @@ public class Fcl {
         Word word = dict.at(name);
         switch (mode) {
             case INTERPRET:
-                if (word != null)
+                if (word != null) {
+                    trace("exec " + word.name());
                     word.enter();
-                else
+                } else {
+                    trace("push " + name);
                     stack.push(recognize(name));
+                }
                 break;
             case COMPILE:
                 if (word != null) {
-                    if (dict.isImmediate(name))
+                    if (dict.isImmediate(name)) {
+                        trace("exec " + word.name());
                         word.enter();
-                    else
+                    } else {
+                        trace(word.name() + " ,");
                         heap[dp++] = word;
+                    }
                 } else {
+                    trace("lit " + name + " ,");
                     heap[dp++] = dict.at("lit");
                     heap[dp++] = recognize(name);
                 }
                 break;
+        }
+    }
+
+    private void trace(String str) {
+        if (trace) {
+            transcript.show("T/" + mode.toString().charAt(0) + " " + str);
+            transcript.cr();
         }
     }
 
