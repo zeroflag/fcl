@@ -1140,6 +1140,33 @@ public class FclTest {
     }
 
     @Test
+    public void testUnsetDefer() {
+        eval("defer: xx");
+        eval("xx");
+        assertEquals(0, fcl.stackSize());
+        eval(": tst xx ;");
+        assertEquals(0, fcl.stackSize());
+    }
+
+    @Test
+    public void testDefer() { // only works for colon defs and not for primitives
+        eval("defer: d1");
+        eval("defer: d2");
+        eval(": tst d1 d2 + ;");
+        eval(": i1 11 ;");
+        eval(": i2 22 ;");
+        eval(": i3 42 ;");
+        eval("` i1 is: d1");
+        eval("` i2 is: d2");
+        assertEquals(11, evalPop("d1").intValue());
+        assertEquals(22, evalPop("d2").intValue());
+        assertEquals(33, evalPop("tst").intValue());
+        eval("` i3 is: d1");
+        assertEquals(42, evalPop("d1").intValue());
+        assertEquals(42+22, evalPop("tst").intValue());
+    }
+
+    @Test
     public void testHttpHeaders() {
         assertEquals(
                 "#[ 'headers' #[ 'Content-Type' 'application/json' ]# 'content' #[ 'a' 1 ]# ]#",

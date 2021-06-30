@@ -53,3 +53,13 @@
 
 var: exit.prim ( primitive exit - in case some word needs to override )
 ` exit exit.prim !
+
+: nop ;
+: defer:
+    word create
+        ['] lit     ,
+        ['] nop     ,
+        ['] exec    ,
+        ['] exit    , ;
+
+: is: ( xt -- ) ` 'longValue' jvm-call-method 1+ ! ;
