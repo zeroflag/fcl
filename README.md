@@ -473,8 +473,7 @@ For example:
 
 ### Tone generator
 
-```
-forth
+```forth
 tone ( hz ms -- )
 ```
 
