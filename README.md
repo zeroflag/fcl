@@ -477,8 +477,7 @@ A shorter way to do the same is to use `+json-type` on the map.
      'bri' 254 
      'transitiontime' t ( centiseconds ) 
    ]# 
-   +json-type 'http://<bridgeip>/api/<apikey>/groups/1/action' http-put
-;
+   +json-type 'http://<bridgeip>/api/<apikey>/groups/1/action' http-put ;
 ```
 #### Controlling a Daikin Air Conditioner
 
@@ -494,8 +493,7 @@ A shorter way to do the same is to use `+json-type` on the map.
     'shum'   0
   ]# 
   'http://192.168.0.25/aircon/set_control_info'
-  http-post 
-;
+  http-post ;
 ```
 
 ```forth
