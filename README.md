@@ -438,7 +438,7 @@ For example:
 'http://myhost.site/expense' http-post 
 ```
 
-You can also specify HTTP headers by adding a `headers` key to the map. In this case you should put the body under the `content' key.
+You can also specify HTTP headers by adding a `headers` key to the map. In this case you should put the body under the `content` key.
 
 ```forth
 #[
