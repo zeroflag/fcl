@@ -54,9 +54,9 @@
 var: exit.prim ( primitive exit - in case some word needs to override )
 ` exit exit.prim !
 
-: nop ;
+: unimplemented 'Uninitialized deferred word' abort ;
 : defer: word create
-    ['] lit   ,  ['] nop   ,
-    ['] exec  ,  ['] exit  , ;
+    ['] lit   ,  ['] unimplemented  ,
+    ['] exec  ,  ['] exit           , ;
 
 : is: ( xt -- ) ` 'longValue' jvm-call-method 1+ ! ;

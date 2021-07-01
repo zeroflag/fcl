@@ -1140,12 +1140,23 @@ public class FclTest {
     }
 
     @Test
-    public void testUnsetDefer() {
+    public void testUnsetDefer() throws Exception {
         eval("defer: xx");
-        eval("xx");
-        assertEquals(0, fcl.stackSize());
-        eval(": tst xx ;");
-        assertEquals(0, fcl.stackSize());
+        try {
+            eval("xx");
+            fail("Expected to fail");
+        } catch (Aborted e) {
+            assertEquals("Uninitialized deferred word", e.getMessage());
+            resetForth();
+        }
+        eval("defer: xx");
+        try {
+            eval(": tst xx ; tst");
+            fail("Expected to fail");
+        } catch (Aborted e) {
+            assertEquals("Uninitialized deferred word", e.getMessage());
+            resetForth();
+        }
     }
 
     @Test
