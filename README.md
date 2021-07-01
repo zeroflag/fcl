@@ -470,7 +470,7 @@ A shorter way to do the same is to use `+json-type` on the map.
 
 ```forth
 : hue ( x y msec -- )
-  10 / rount -> t -> y -> x
+  10 / round -> t -> y -> x
   #[ 
      'on' true 
      'xy' [ x y ] 
