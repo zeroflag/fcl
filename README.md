@@ -441,13 +441,46 @@ You can also specify HTTP headers by adding a `headers` key to the map. In this 
 
 ```forth
 #[
-  'headers' #[ <key> <value> ]#
+  'headers' #[ <key1> <value2> <key2> <value2> ]#
   'content' #[ .. ]#
 ]#
 ```
 
+For example this will set the content type header to json and the body will be sent as a JSON object.
+
+
+```forth
+#[
+  'headers' #[ 'Content-Type' 'application/json' ]
+  'content' #[ 'on' true 'xy' [ 0.3 0.4 ] 'transitiontime' 10 ]#
+]#
+```
+
+A shorter way to do the same is to use `+json-type` on the map.
+
+```forth
+#[ 'on' true 'xy' [ 0.3 0.4 ] 'transitiontime' 10 ]# +json-type
+```
+
+
 ### Examples
 
+#### Controlling Philips Hue lights
+
+
+```forth
+: hue ( x y msec -- )
+  10 / rount -> t -> y -> x
+  1 -> group-id
+  #[ 
+     'on' true 
+     'xy' [ x y ] 
+     'bri' 254 
+     'transitiontime' t ( centiseconds ) 
+   ]# +json-type
+   group-id 'http://<bridgeip>/api/<apikey>/groups/1/action' http-put
+;
+```
 #### Controlling a Daikin Air Conditioner
 
 ```forth
