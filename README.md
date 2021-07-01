@@ -476,8 +476,8 @@ A shorter way to do the same is to use `+json-type` on the map.
      'xy' [ x y ] 
      'bri' 254 
      'transitiontime' t ( centiseconds ) 
-   ]# +json-type
-   group-id 'http://<bridgeip>/api/<apikey>/groups/1/action' http-put
+   ]# 
+   +json-type 'http://<bridgeip>/api/<apikey>/groups/1/action' http-put
 ;
 ```
 #### Controlling a Daikin Air Conditioner
