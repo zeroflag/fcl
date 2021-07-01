@@ -421,8 +421,9 @@ Quotations combined with the collection API offers some high level control struc
 There is basic support getting an url or posting a form.
 
 ```forth
-http-get ( url -- response-body http-code )
+http-get  ( url -- response-body http-code )
 http-post ( map url -- response-body http-code )
+http-put  ( map url -- response-body http-code )
 ```
 
 For example:
