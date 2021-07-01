@@ -437,9 +437,9 @@ For example:
 'http://myhost.site/expense' http-post 
 ```
 
-## Examples
+### Examples
 
-### Controlling a Daikin Air Conditioner
+#### Controlling a Daikin Air Conditioner
 
 ```forth
 : cool ( temperature -- response http-code )
@@ -468,3 +468,15 @@ For example:
     out
   then ;
 ```
+
+## Misc
+
+### Tone generator
+
+```
+forth
+tone ( hz ms -- )
+```
+
+The `tone` word is for generating a tone with a given frequency and duration.
+
