@@ -228,7 +228,10 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
 
     @Override
     public boolean boolValue() {
-        throw new TypeMismatched(this, "bool");
+        if (STRICT)
+            throw new TypeMismatched(this, "bool");
+        else
+            return value.longValue() != 0l;
     }
 
     @Override
