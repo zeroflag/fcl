@@ -521,3 +521,19 @@ tone ( hz ms -- )
 
 The `tone` word is for generating a tone with a given frequency and duration.
 
+### Camera LED
+
+```forth
+torch ( n -- n )
+```
+
+`torch` toggles the built-in camera LED. 
+
+```forth
+1 torch .
+500 ms
+0 torch .
+```
+
+This will turn on the LED for 500 milliseconds.
+
