@@ -1,6 +1,6 @@
 # FCL - Forth Calculator's Language
 
-FCL is the programming language of an Android app called Forth Calculator. It is a Forth dialect with optional local variables, complex data structures, quotations and Java interoperability.
+FCL is the programming language of an Android app called [Forth Calculator](https://play.google.com/store/apps/details?id=com.vectron.forthcalc.pro). It is a Forth dialect with optional local variables, complex data structures, quotations and Java interoperability.
 
 <img align="right" src="/img/screenshot1.png" width="180">
 
