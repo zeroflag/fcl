@@ -15,5 +15,8 @@
 
 : ms ( n -- ) 'java.lang.Thread/sleep/l' jvm-call-static ;
 
-: tone ( hz ms -- ) swap 'com.vectron.forthcalc.support.Tone/play/di' jvm-call-static ;
-: torch ( n -- ) 'com.vectron.forthcalc.support.Torch/toggle/O' jvm-call-static ;
+: tone ( hz ms -- ) swap :com.vectron.forthcalc.support.Tone/play/di jvm-call-static ;
+: torch ( n -- ) :com.vectron.forthcalc.support.Torch/toggle/O jvm-call-static ;
+
+: draw-circle ( x y r -- ) :com.vectron.forthcalc.CanvasView/drawCircle/ddd jvm-call-static ;
+: draw-rect ( left top right bottom -- ) :com.vectron.forthcalc.CanvasView/drawRect/dddd jvm-call-static ;

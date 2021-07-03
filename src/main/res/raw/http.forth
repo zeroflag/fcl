@@ -2,19 +2,19 @@
 'application/json'  val: APPLICATION/JSON
 
 : http-get ( u -- n b )
-    'com.vectron.forthcalc.support.HttpClient/get/s' jvm-call-static -> response
+    :com.vectron.forthcalc.support.HttpClient/get/s jvm-call-static -> response
     response 'body' jvm-call-method
     response 'code' jvm-call-method ;
 
 : http-post ( d u -- n b )
     -> url -> request
-    request url 'com.vectron.forthcalc.support.HttpClient/post/sM' jvm-call-static -> response
+    request url :com.vectron.forthcalc.support.HttpClient/post/sM jvm-call-static -> response
     response 'body' jvm-call-method
     response 'code' jvm-call-method ;
 
 : http-put ( d u -- n b )
     -> url -> request
-    request url 'com.vectron.forthcalc.support.HttpClient/put/sM' jvm-call-static -> response
+    request url :com.vectron.forthcalc.support.HttpClient/put/sM jvm-call-static -> response
     response 'body' jvm-call-method
     response 'code' jvm-call-method ;
 

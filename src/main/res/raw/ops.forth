@@ -22,24 +22,24 @@
 : tip1 ( n -- n ) 15 percent ;
 : tip2 ( bill split --  total tip ) / dup 115 percent swap 15 percent ;
 ( trigonometry )
-: pi ( n -- n ) 'java.lang.Math/PI' jvm-static-var ;
-: sin ( n -- n ) 'java.lang.Math/sin/d' jvm-call-static ;
-: cos ( n -- n ) 'java.lang.Math/cos/d' jvm-call-static ;
-: tan ( n -- n ) 'java.lang.Math/tan/d' jvm-call-static ;
-: asin ( n -- n ) 'java.lang.Math/asin/d' jvm-call-static ;
-: acos ( n -- n ) 'java.lang.Math/acos/d' jvm-call-static ;
-: atan ( n -- n ) 'java.lang.Math/atan/d' jvm-call-static ;
-: sinh ( n -- n ) 'java.lang.Math/sinh/d' jvm-call-static ;
-: cosh ( n -- n ) 'java.lang.Math/cosh/d' jvm-call-static ;
-: tanh ( n -- n ) 'java.lang.Math/tanh/d' jvm-call-static ;
+: pi ( n -- n ) :java.lang.Math/PI jvm-static-var ;
+: sin ( n -- n ) :java.lang.Math/sin/d jvm-call-static ;
+: cos ( n -- n ) :java.lang.Math/cos/d jvm-call-static ;
+: tan ( n -- n ) :java.lang.Math/tan/d jvm-call-static ;
+: asin ( n -- n ) :java.lang.Math/asin/d jvm-call-static ;
+: acos ( n -- n ) :java.lang.Math/acos/d jvm-call-static ;
+: atan ( n -- n ) :java.lang.Math/atan/d jvm-call-static ;
+: sinh ( n -- n ) :java.lang.Math/sinh/d jvm-call-static ;
+: cosh ( n -- n ) :java.lang.Math/cosh/d jvm-call-static ;
+: tanh ( n -- n ) :java.lang.Math/tanh/d jvm-call-static ;
 ( math )
-: e ( n -- n ) 'java.lang.Math/E' jvm-static-var ;
-: round ( n -- n ) 'java.lang.Math/round/d' jvm-call-static ;
-: sqrt ( n -- n ) 'java.lang.Math/sqrt/d' jvm-call-static ;
-: 10log ( n -- n ) 'java.lang.Math/log10/d' jvm-call-static ;
+: e ( n -- n ) :java.lang.Math/E jvm-static-var ;
+: round ( n -- n ) :java.lang.Math/round/d jvm-call-static ;
+: sqrt ( n -- n ) :java.lang.Math/sqrt/d jvm-call-static ;
+: 10log ( n -- n ) :java.lang.Math/log10/d jvm-call-static ;
 : nlog ( n n -- n ) swap 10log swap 10log / ;
 : 2log ( n -- n ) 2.0 nlog ;
-: elog ( n -- n ) 'java.lang.Math/log/d' jvm-call-static ;
+: elog ( n -- n ) :java.lang.Math/log/d jvm-call-static ;
 : n! ( n -- n )
     dup 1 <= if
         drop 1
@@ -47,7 +47,7 @@
         round dup 1 do i * loop
     then ;
 : avg* ( .. -- n ) depth dup 1 < if drop else >r sum* r> / then ;
-: rnd ( -- n ) 'com.vectron.fcl.interop.JvmInterOp/random' jvm-call-static ;
+: rnd ( -- n ) :com.vectron.fcl.interop.JvmInterOp/random jvm-call-static ;
 : min* ( .. -- n ) depth 1- 0 do min loop ;
 : max* ( .. -- n ) depth 1- 0 do max loop ;
 ( unit conversion )
@@ -79,18 +79,18 @@
 : pa>b ( n -- n ) 100000 / ;
 : t>pa ( n -- n ) 133.322387415 * ;
 : pa>t ( n -- n ) 133.322387415 / ;
-: uptime ( -- millis ) 'android.os.SystemClock/elapsedRealtime' jvm-call-static ;
-: >num ( s -- n ) 'com.vectron.fcl.types.Num/parse/s' jvm-call-static ;
+: uptime ( -- millis ) :android.os.SystemClock/elapsedRealtime jvm-call-static ;
+: >num ( s -- n ) :com.vectron.fcl.types.Num/parse/s jvm-call-static ;
 : year ( -- y )
-    'java.util.Calendar/YEAR' jvm-static-var
-    'java.util.Calendar/getInstance' jvm-call-static
-    'get/i' jvm-call-method ;
+    :java.util.Calendar/YEAR jvm-static-var
+    :java.util.Calendar/getInstance jvm-call-static
+    :get/i jvm-call-method ;
 : month ( -- y )
-    'java.util.Calendar/MONTH' jvm-static-var
-    'java.util.Calendar/getInstance' jvm-call-static
-    'get/i' jvm-call-method
+    :java.util.Calendar/MONTH jvm-static-var
+    :java.util.Calendar/getInstance jvm-call-static
+    :get/i jvm-call-method
     1 + ;
 : day ( -- y )
-    'java.util.Calendar/DAY_OF_MONTH' jvm-static-var
-    'java.util.Calendar/getInstance' jvm-call-static
-    'get/i' jvm-call-method ;
+    :java.util.Calendar/DAY_OF_MONTH jvm-static-var
+    :java.util.Calendar/getInstance jvm-call-static
+    :get/i jvm-call-method ;

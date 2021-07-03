@@ -391,12 +391,12 @@ public class FclTest {
         assertEquals(1.1752, evalPop("1 sinh").doubleValue(), 0.001);
         assertEquals(1.5430, evalPop("1 cosh").doubleValue(), 0.001);
         assertEquals(0.7616, evalPop("1 tanh").doubleValue(), 0.001);
-        assertEquals(1, evalPop("1.3 'intValue' jvm-call-method").doubleValue(), 0.01);
+        assertEquals(1, evalPop("1.3 :intValue jvm-call-method").doubleValue(), 0.01);
         assertFalse(evalPop("1.3 'nosuch' jvm-has-method").boolValue());
         assertTrue(evalPop("1.3 'round' jvm-has-method").boolValue());
         assertTrue(evalPop("[ 1 2 ] 'iterator' jvm-has-method").boolValue());
         assertTrue(evalPop("[ 1 2 ] 'append/O' jvm-has-method").boolValue());
-        assertFalse(evalPop("[ 1 2 ] 'append/i' jvm-has-method").boolValue());
+        assertFalse(evalPop("[ 1 2 ] :append/i jvm-has-method").boolValue());
         assertFalse(evalPop("[ 1 2 ] 'append/OO' jvm-has-method").boolValue());
     }
 

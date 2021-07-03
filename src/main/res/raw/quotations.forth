@@ -1,6 +1,6 @@
-: <q> ( adr sfp -- c ) 'com.vectron.fcl.types.Quot/create/ii' jvm-call-static ;
-: qt.adr ( q -- a ) 'address' jvm-call-method ;
-: qt.sfp ( q -- a ) 'stackFrame' jvm-call-method ;
+: <q> ( adr sfp -- c ) :com.vectron.fcl.types.Quot/create/ii jvm-call-static ;
+: qt.adr ( q -- a ) :address jvm-call-method ;
+: qt.sfp ( q -- a ) :stackFrame jvm-call-method ;
 
 : { immediate
     frame.allocated @ not if    ( We need to have a PSP up front for <q>, because quotations might have its own locals )

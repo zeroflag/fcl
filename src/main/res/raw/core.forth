@@ -59,4 +59,4 @@ var: exit.prim ( primitive exit - in case some word needs to override )
     ['] lit   ,  ['] unimplemented  ,
     ['] exec  ,  ['] exit           , ;
 
-: is: ( xt -- ) ` 'longValue' jvm-call-method 1+ ! ;
+: is: ( xt -- ) ` :longValue jvm-call-method 1+ ! ;
