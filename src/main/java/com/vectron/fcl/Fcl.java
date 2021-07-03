@@ -11,6 +11,7 @@ import com.vectron.fcl.types.Num;
 import com.vectron.fcl.types.Obj;
 import com.vectron.fcl.types.Primitive;
 import com.vectron.fcl.types.Str;
+import com.vectron.fcl.types.Symbol;
 import com.vectron.fcl.types.Word;
 
 import java.io.IOException;
@@ -18,7 +19,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Fcl {
@@ -35,6 +38,7 @@ public class Fcl {
     private Reader reader;
     private Mode mode = Mode.INTERPRET;
     private final Object[] heap;
+    private final Map<String, Symbol> symbols = new HashMap<>();
     private int dp = SCRATCH_SIZE;
     private int ip = 0;
     private boolean trace = false;
@@ -567,13 +571,15 @@ public class Fcl {
     private Obj recognize(String token) {
         Obj str = recognizeStr(token);
         if (str != null) return str;
+        Obj symbol = recognizeSymbol(token);
+        if (symbol != null) return symbol;
         return Num.parse(token);
     }
 
-    private Obj recognizeStr(String firstToken) {
-        if (!firstToken.startsWith("'")) return null;
-        StringBuilder str = new StringBuilder(firstToken.substring(1));
-        if (firstToken.endsWith("'") && firstToken.length() > 1) {
+    private Obj recognizeStr(String token) {
+        if (!token.startsWith("'")) return null;
+        StringBuilder str = new StringBuilder(token.substring(1));
+        if (token.endsWith("'") && token.length() > 1) {
             str.setLength(str.length() - 1);
         } else {
             str.append(" ");
@@ -584,6 +590,18 @@ public class Fcl {
             }
         }
         return new Str(str.toString());
+    }
+
+    private Obj recognizeSymbol(String token) {
+        return token.startsWith(":") && token.length() > 1
+                ? symbol(token.substring(1))
+                : null;
+    }
+
+    private Symbol symbol(String name) {
+        if (!symbols.containsKey(name))
+            symbols.put(name, new Symbol(name));
+        return symbols.get(name);
     }
 
     private void innerLoop(int address) {

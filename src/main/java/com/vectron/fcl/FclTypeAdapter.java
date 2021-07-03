@@ -17,6 +17,7 @@ import com.vectron.fcl.types.Obj;
 import com.vectron.fcl.types.Quot;
 import com.vectron.fcl.types.Range;
 import com.vectron.fcl.types.Str;
+import com.vectron.fcl.types.Symbol;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class FclTypeAdapter extends TypeAdapter<Object> {
         register("bool", Bool.class);
         register("str", Str.class);
         register("dic", Dic.class);
+        register("sym", Symbol.class);
         register("lst", Lst.class);
         register("nil", Nil.class);
         register("quot", Quot.class);

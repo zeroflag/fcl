@@ -1187,6 +1187,16 @@ public class FclTest {
                 evalPop("#[ 'headers' #[ 'Content-Type' 'text/plain' ]# 'content' #[ 'a' 1 ]# ]# +json-type").toString());
     }
 
+    @Test
+    public void testSymbols() {
+        assertEquals(":my-symbol", evalPop(":my-symbol").toString());
+        assertEquals(true, evalPop(":my-symbol :my-symbol =").boolValue());
+        assertEquals(false, evalPop(":my-symbol :my-symbol !=").boolValue());
+        assertEquals(false, evalPop(":my-symbol :my-symbol2 =").boolValue());
+        assertEquals(true, evalPop(":my-symbol :my-symbol2 !=").boolValue());
+        assertEquals(true, evalPop(": tst :my-symbol :my-symbol = ; tst").boolValue());
+    }
+
     private String transcript() {
         return transcript.content();
     }
