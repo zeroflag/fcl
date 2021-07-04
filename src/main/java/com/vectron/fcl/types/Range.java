@@ -9,17 +9,17 @@ import static com.vectron.fcl.Fcl.STRICT;
 
 public class Range implements Obj {
     private RangeIterator iterator;
-    private final int from;
-    private final int to;
-    private final int by;
-    private int current;
+    private final Num from;
+    private final Num to;
+    private final Num by;
+    private Num current;
 
-    public static Range create(int by, int to, int from) {
+    public static Range create(Num by, Num to, Num from) {
         return new Range(from, to, by);
     }
 
-    private Range(int from, int to, int by) {
-        if (by == 0)
+    private Range(Num from, Num to, Num by) {
+        if (by.doubleValue() == 0)
             throw new InterOpFailed("Invalid increment for range: " + by);
         this.from = from;
         this.to = to;
@@ -66,7 +66,7 @@ public class Range implements Obj {
 
     @Override
     public String toString() {
-        return by == 1
+        return by.doubleValue() == 1
                 ? String.format("%d..%d (%d)", from, to, current)
                 : String.format("%d...%d (%d) by %d", from, to, current, by);
     }
@@ -89,13 +89,15 @@ public class Range implements Obj {
     public class RangeIterator implements Iterator<Obj> {
         @Override
         public boolean hasNext() {
-            return by > 0 ? current <= to : current >= to;
+            return by.doubleValue() > 0
+                    ? current.doubleValue() <= to.doubleValue()
+                    : current.doubleValue() >= to.doubleValue();
         }
 
         @Override
         public Obj next() {
-            Num result = new Num(current);
-            current += by;
+            Num result = current;
+            current = (Num)current.add(by);
             return result;
         }
     }

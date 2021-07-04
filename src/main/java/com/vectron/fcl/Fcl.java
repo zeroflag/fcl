@@ -34,7 +34,6 @@ public class Fcl {
     private final JvmInterOp interOp;
     private final FclStack stack;
     private final Transcript transcript;
-    private Word lastWord;
     private Reader reader;
     private Mode mode = Mode.INTERPRET;
     private final Object[] heap;
@@ -47,6 +46,7 @@ public class Fcl {
         private final int address;
         private final String name;
         private boolean visible = true;
+        private boolean immediate = false;
 
         public ColonDef(int address, String name) {
             this.address = address;
@@ -73,6 +73,16 @@ public class Fcl {
         @Override
         public boolean visible() {
             return visible;
+        }
+
+        @Override
+        public boolean immediate() {
+            return immediate;
+        }
+
+        @Override
+        public void immediate(boolean isImmediate) {
+            immediate = isImmediate;
         }
 
         @Override
@@ -148,6 +158,16 @@ public class Fcl {
         @Override
         public boolean visible() {
             return visible;
+        }
+
+        @Override
+        public boolean immediate() {
+            return false;
+        }
+
+        @Override
+        public void immediate(boolean isImmediate) {
+            throw new Aborted("Cannot make immediate val");
         }
 
         @Override
@@ -232,6 +252,16 @@ public class Fcl {
         @Override
         public boolean visible() {
             return visible;
+        }
+
+        @Override
+        public boolean immediate() {
+            return false;
+        }
+
+        @Override
+        public void immediate(boolean isImmediate) {
+            throw new Aborted("Cannot make immediate val");
         }
 
         @Override
@@ -366,7 +396,7 @@ public class Fcl {
         addPrimitive("@", () -> stack.push((Obj) heap[stack.pop().intValue()]));
         addPrimitive("[']", () -> stack.push((Word)heap[ip++]));
         addPrimitive("`", () -> { Word word = dict.at(word()); stack.push(word == null ? Nil.INSTANCE : word); });
-        addPrimitive("immediate", () -> dict.makeImmediate(lastWord));
+        addPrimitive("immediate", () -> dict.lastWord().immediate(true), true);
         addPrimitive(".", () -> show(stack.pop()));
         addPrimitive("jvm-call-static", interOp::jvmCallStatic);
         addPrimitive("jvm-call-method", interOp::jvmCallMethod);
@@ -378,8 +408,8 @@ public class Fcl {
         addPrimitive("rev*", this::reverse);
         addPrimitive("key", () -> stack.push(new Num(key())));
         addPrimitive("word", () -> stack.push(new Str(word())));
-        addPrimitive("override", () -> lastWord.visible(false));
-        addPrimitive("reveal", () -> lastWord.visible(true));
+        addPrimitive("override", () -> dict.lastWord().visible(false), true);
+        addPrimitive("reveal", () -> dict.lastWord().visible(true));
         addPrimitive("delword", () -> dict.remove((String)stack.pop().value()));
         addPrimitive("jmp#f", () -> ip += stack.pop().boolValue() ? 1 : ((Num) heap[ip]).longValue());
         addPrimitive("jmp", () -> ip += ((Num) heap[ip]).longValue());
@@ -404,16 +434,15 @@ public class Fcl {
         addPrimitive("create", () -> dict.add(new ColonDef(dp, (String)stack.pop().value())));
         addPrimitive("dasm", this::disassemble);
         addPrimitive(":", () -> {
-            lastWord = new ColonDef(dp, word());
-            dict.add(lastWord);
+            dict.add(new ColonDef(dp, word()));
             mode = Mode.COMPILE;
         });
         addPrimitive(";", () -> {
             heap[dp++] = dict.at(EXIT);
             heap[dp++] = Nil.INSTANCE;
             mode = Mode.INTERPRET;
-            lastWord.visible(true);
-        });
+            dict.lastWord().visible(true);
+        }, true);
     }
 
     private LogicOperand lOp(Obj obj) {
@@ -469,7 +498,13 @@ public class Fcl {
     }
 
     private void addPrimitive(String name, Runnable code) {
-        dict.add(new Primitive(name, code));
+        addPrimitive(name, code, false);
+    }
+
+    private void addPrimitive(String name, Runnable code, boolean immediate) {
+        Primitive word = new Primitive(name, code);
+        word.immediate(immediate);
+        dict.add(word);
     }
 
     public void eval(String source) {
@@ -545,7 +580,7 @@ public class Fcl {
                 break;
             case COMPILE:
                 if (word != null) {
-                    if (dict.isImmediate(name)) {
+                    if (word.immediate()) {
                         trace("exec " + word.name());
                         word.enter();
                     } else {

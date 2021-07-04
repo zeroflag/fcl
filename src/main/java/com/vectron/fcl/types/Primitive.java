@@ -8,6 +8,7 @@ public class Primitive implements Word {
     private final Runnable code;
     private final String name;
     private boolean visible = true;
+    private boolean immediate;
 
     public Primitive(String name, Runnable code) {
         this.code = code;
@@ -22,6 +23,16 @@ public class Primitive implements Word {
     @Override
     public boolean visible() {
         return visible;
+    }
+
+    @Override
+    public boolean immediate() {
+        return immediate;
+    }
+
+    @Override
+    public void immediate(boolean isImmediate) {
+        immediate = isImmediate;
     }
 
     @Override

@@ -14,20 +14,23 @@
 
 var: #loc                       ( number of local variables per word, used in compile time )
 var: psp                        ( top of the parameter stack, each allocation adds max#loc to this )
-var: sfp                        ( pointer to the current stack frame, can be different from psp, in case of quotations )
+var: qpsp                       ( parameter stack pointer used by quotations )
 var: frame.allocated            ( compile time variable for checking if a frame was already allocated )
+var: q.count                    ( compile time counter for quotations, nested into each other )
 
 8    val:   max#loc             ( maximum number of local variables per word )
 1024 val:   ps.size             ( max pstack size )
 ps.size     allot val: pstack   ( parameter stack for storing the locals )
 max#loc     allot val: names    ( names of the local variables )
 
+0     q.count !
 false frame.allocated !
 
 : full.check ( -- )  psp @ ps.size >= if 'pstack overflow' abort then ;
 : empty.check ( -- ) psp @ 0 <= if 'pstack underflow' abort then ;
 
-: frame.top ( -- a ) pstack sfp @ + ;
+: frame.top   ( -- a ) pstack psp  @ + ;
+: frame.top.q ( -- a ) pstack qpsp @ + ; ( for quotations we use the psp of the enclosing word )
 
 : check# ( -- ) #loc @ max#loc >= if 'Too many local variables' abort then ;
 : >names ( s -- )
@@ -38,14 +41,27 @@ false frame.allocated !
 
 : frame.alloc ( -- )
     psp @ max#loc + psp ! ( we don't know how many #loc-s needed until ;, lets allocate max#loc )
-    psp @ sfp !
     full.check ;
 
 : frame.drop ( -- )
     empty.check
     max#loc 0 do jvm-null frame.top i - ! loop ( null out everything so that jvm gc can collect )
-    psp @ max#loc - psp !                      ( drop the stack frame )
-    psp @ sfp ! ;
+    psp @ max#loc - psp ! ;                    ( drop the stack frame )
+
+: (frame.top)
+    q.count @ 0 > if
+        ['] frame.top.q ,
+    else
+        ['] frame.top   ,
+    then ;
+
+: lookup ( type index -- )
+    (frame.top)
+    ['] lit       ,  ( index )  ,
+    ['] -         ,
+    1 = if ['] @  , then ;
+
+: postpone: ` , ; immediate
 
 : local ( n -- )
     check#
@@ -53,16 +69,15 @@ false frame.allocated !
         true frame.allocated !
         ['] frame.alloc ,           ( alloc new stack frame for max#loc )
     then
-    ['] frame.top ,                 ( get the current stack frame address )
+    (frame.top)
     ['] lit       ,  #loc @  ,      ( local index )
     ['] -         ,  ['] !   ,      ( move local to from data stack to the stack frame )
-    ['] jmp       , (dummy)         ( bypass the lookup word )
+    ['] jmp       ,  (dummy)        ( bypass the lookup word )
     word dup >names                 ( store lookup word name )
-    create                          ( compile lookup word  )
-        ['] frame.top ,             ( current stack frame )
-        ['] lit       ,  #loc @  ,  ( local within the frame )
-        ['] -         ,
-        swap 1 = if ['] @ , then    ( depending on =>/-> we either fetch or keep the address )
+    create postpone: immediate      ( compile immediate lookup word  )
+        ['] lit       ,  swap ,     ( type 1=val 0=var )
+        ['] lit       ,  #loc @  ,  ( local index within the frame )
+        ['] lookup    ,
         ['] exit      ,
     #loc inc
     resolve ;

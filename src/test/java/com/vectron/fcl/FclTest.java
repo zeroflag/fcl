@@ -1035,6 +1035,30 @@ public class FclTest {
                 ";\n"
         );
         assertEquals(41, evalPop("40 tst").intValue());
+        eval(": tst\n" +
+                " => a\n" +
+                "{ 3 -> b a @ 3 + a ! } yield a @\n" +
+                ";\n"
+        );
+        assertEquals(43, evalPop("40 tst").intValue());
+
+        eval(": tst\n" +
+                "  -> q\n" +
+                "nil => a\n" +
+                "nil => b\n" +
+                "1 10 1 ... { -> x x q yield -> y x y b ! a ! } each ;\n" +
+                " : tst2 { dup * } tst ; tst2 \n"
+        );
+
+        assertEquals(1, evalPop(": wl 0 -> wx ;\n" +
+                ": qt-calls-word-with-local\n" +
+                "    1 -> x 0 => y\n" +
+                "    { wl 1 y ! } 10 times y @ ; qt-calls-word-with-local\n").intValue());
+
+        assertEquals(1, evalPop(": wl2 1 -> a { 2 -> b } ; : wl1 0 -> wx wl2 ;\n" +
+                ": qt-calls-word-with-local\n" +
+                "    1 -> x 0 => y\n" +
+                "    { wl 1 y ! } 10 times y @ ; qt-calls-word-with-local\n").intValue());
     }
 
     @Test

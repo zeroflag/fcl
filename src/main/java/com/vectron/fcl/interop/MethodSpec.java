@@ -117,6 +117,8 @@ class MethodSpec {
             params.add((String)value.value());
         else if (clazz == Dic.class)
             params.add((Dic)value);
+        else if (clazz == Num.class)
+            params.add((Num)value);
         else if (clazz == Map.class)
             params.add((Map)value.value());
         else if (clazz == List.class)
@@ -135,6 +137,7 @@ class MethodSpec {
             case 's': return String.class;
             case 'm': return Map.class;
             case 't': return List.class;
+            case 'N': return Num.class;
             case 'O': return Obj.class;
             case 'M': return Dic.class;
             default:

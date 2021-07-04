@@ -1,28 +1,36 @@
-: <q> ( adr sfp -- c ) :com.vectron.fcl.types.Quot/create/ii jvm-call-static ;
+: <q> ( adr psp -- c ) :com.vectron.fcl.types.Quot/create/ii jvm-call-static ;
 : qt.adr ( q -- a ) :address jvm-call-method ;
-: qt.sfp ( q -- a ) :stackFrame jvm-call-method ;
+: qt.psp ( q -- a ) :stackFrame jvm-call-method ;
+
+: (psp)
+    q.count @ 1 > if
+        ['] qpsp , ['] @ ,      ( nested quotation use its q.psp )
+    else
+        ['] psp  , ['] @ ,      ( non nested quotation use the psp of the enclosing word )
+    then ;
 
 : { immediate
+    q.count inc
     frame.allocated @ not if    ( We need to have a PSP up front for <q>, because quotations might have its own locals )
         ['] frame.alloc ,       ( But at this point it might not be available yet unless the enclosing function has locals before the quotations )
         true frame.allocated !
     then
     ['] lit , here 6 + ,        ( beginning of the quotation )
-    ['] sfp , ['] @ ,           ( current stack frame )
-    ['] <q> ,                   ( make a quotation object from address + sfp )
-    ['] jmp , (dummy)           ( bypass inline code )
-;
+    (psp)
+    ['] <q> ,                   ( make a quotation object from address + psp )
+    ['] jmp , (dummy) ;         ( bypass inline code )
 
 : } immediate
     ['] exit.prim @ ,
-    resolve ;
+    resolve
+    q.count dec ;
 
 : yield ( q -- ? )
-    sfp @ >r
+    qpsp @ >r
     dup
-    qt.sfp sfp !
+    qt.psp qpsp !
     qt.adr exec
-    r> sfp ! ;
+    r> qpsp ! ;
 
 : dip ( a xt -- a ) swap >r yield r> ;
 : keep ( a xt -- xt.a a ) over >r yield r> ;

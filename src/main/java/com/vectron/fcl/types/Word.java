@@ -5,4 +5,6 @@ public interface Word extends Obj {
     String name();
     void visible(boolean isVisible);
     boolean visible();
+    boolean immediate();
+    void immediate(boolean isImmediate);
 }

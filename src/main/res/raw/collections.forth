@@ -86,7 +86,7 @@
 : keys ( d -- l ) :keys jvm-call-method ;
 : values ( d -- l ) :values jvm-call-method ;
 
-: ... ( lower upper -- lst ) :com.vectron.fcl.types.Range/create/iii jvm-call-static ;
+: ... ( lower upper step -- lst ) :com.vectron.fcl.types.Range/create/NNN jvm-call-static ;
 : .. ( lower upper -- lst ) 1  ... ;
 
 : times ( q n -- ) -> n -> q n 0 do q yield loop  ;
