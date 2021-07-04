@@ -384,6 +384,7 @@ public class Fcl {
         addPrimitive("false", () -> stack.push(Bool.FALSE));
         addPrimitive("nil", () -> stack.push(Nil.INSTANCE));
         addPrimitive("here", () -> stack.push(new Num(dp)));
+        addPrimitive("dp!", () -> dp = stack.pop().intValue() );
         addPrimitive("interpret", () -> mode = Mode.INTERPRET);
         addPrimitive("trace", () -> trace = stack.pop().boolValue());
         addPrimitive("lit", () -> stack.push((Obj)heap[ip++]));

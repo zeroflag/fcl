@@ -17,11 +17,16 @@ var: psp                        ( top of the parameter stack, each allocation ad
 var: qpsp                       ( parameter stack pointer used by quotations )
 var: frame.allocated            ( compile time variable for checking if a frame was already allocated )
 var: q.count                    ( compile time counter for quotations, nested into each other )
+var: ldp
 
+6    val:   look-word-size      ( compiled size of one lookup word )
 8    val:   max#loc             ( maximum number of local variables per word )
 1024 val:   ps.size             ( max pstack size )
 ps.size     allot val: pstack   ( parameter stack for storing the locals )
 max#loc     allot val: names    ( names of the local variables )
+
+max#loc look-word-size *
+allot val: scratch              ( scratch area for compiling temporary lookup words )
 
 0     q.count !
 false frame.allocated !
@@ -68,19 +73,23 @@ false frame.allocated !
     frame.allocated @ not if        ( is this the first local? )
         true frame.allocated !
         ['] frame.alloc ,           ( alloc new stack frame for max#loc )
+        scratch ldp !
     then
     (frame.top)
     ['] lit       ,  #loc @  ,      ( local index )
     ['] -         ,  ['] !   ,      ( move local to from data stack to the stack frame )
-    ['] jmp       ,  (dummy)        ( bypass the lookup word )
+    here                            ( save this dp and restore it after the lookup word is compiled to the scratch area )
     word dup >names                 ( store lookup word name )
+    ldp @ dp!                       ( set dp to scratch area )
     create postpone: immediate      ( compile immediate lookup word  )
         ['] lit       ,  swap ,     ( type 1=val 0=var )
         ['] lit       ,  #loc @  ,  ( local index within the frame )
         ['] lookup    ,
         ['] exit      ,
+    here ldp @ - look-word-size != if 'Invalid lookup word size' abort then
     #loc inc
-    resolve ;
+    here ldp !
+    dp! ;
 
 : -> immediate 1 local ;
 : => immediate 0 local ;
