@@ -13,7 +13,7 @@ Watch this [demo](https://www.youtube.com/watch?v=9rf8Y_lwj3g) to see it in acti
   0 1 { 2dup + } n times ; ( quotation )
 ```
 
-Besides all the high-level features, FCL supports the traditional Forth programming structures and uses the same compilation model (compile/interpret mode, dictionary, immediate words, etc.) as a classsic Forth.
+Besides all the high-level features, FCL supports the traditional Forth programming structures and uses the same compilation model (compile/interpret mode, dictionary, immediate words, etc.) as a classic Forth.
 
 ## The Syntax
 
