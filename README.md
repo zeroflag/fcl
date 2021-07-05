@@ -17,7 +17,7 @@ Besides all the high-level features, FCL supports the traditional Forth programm
 
 ## The Syntax
 
-The syntax is a superset of the Forth language. In FCL there are literal syntax for creaing Lists `[ 1 2 3 ]`, Maps `#[ 'key' 'value' ]#`, Quotations `{ dup + }`,  Strings `'Hello World'`, and Ranges `1 10 ..`. But many other things are the same as in a traditional Forth system.
+The syntax is a superset of the Forth language. In FCL there are literal syntax for creaing Lists `[ 1 2 3 ]`, Maps `#[ 'key' 'value' ]#`, Quotations `{ dup + }`,  Strings `'Hello World'`, Ranges `1 10 ..` and Symbols `:symbol`. But many other things are the same as in a traditional Forth system.
 
 ## Low-level control structures
 
