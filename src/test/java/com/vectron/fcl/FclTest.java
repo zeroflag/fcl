@@ -91,7 +91,14 @@ public class FclTest {
         assertEquals(asList(1l, 85l), evalGetStack("2 8 pow 3 /mod"));
         assertEquals(3, evalPop("10 3 /mod nip").intValue());
         assertEquals(1, evalPop("10 3 /mod drop").intValue());
+    }
 
+    @Test
+    public void testNumberLiterals() {
+        assertEquals(12345, evalPop("12345").longValue());
+        assertEquals(255, evalPop("0xFF").longValue());
+        assertEquals(131, evalPop("0b10000011").longValue());
+        assertEquals(-1.44, evalPop("-1.44").doubleValue(), 0.01);
     }
 
     @Test

@@ -32,6 +32,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
         try {
             if (str.startsWith("0x"))
                 return new Num(Long.parseLong(str.substring(2), 16));
+            else if (str.startsWith("0b"))
+                return new Num(Long.parseLong(str.substring(2), 2));
             return new Num(Long.parseLong(str));
         } catch (NumberFormatException e1) {
             try {
