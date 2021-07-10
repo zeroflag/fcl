@@ -314,6 +314,15 @@ A list is a dynamic, ordered data structed. `[` and `]` are Forth words, so a wh
 ```forth
 [ 1 2 3 ] 2 * \ basic arithmetic with scalars work with lists, this will multiple each item with 2.
 ```
+
+```forth
+[ 1 2 3 ] minl \ selects the smallest item from the list
+```
+
+```forth
+[ 1 2 3 ] maxl \ selects the largest item from the list
+```
+
   
 ### Implementation notes
 
