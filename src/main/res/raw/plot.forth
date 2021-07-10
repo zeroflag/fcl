@@ -9,7 +9,7 @@
 320        val: width
 320        val: height
 0xFF000000 val: AXIS-COLOR
-0xFF641E16 val: LINE-COLOR
+0xFF2874A6 val: LINE-COLOR
 0xFF93D078 val: GRID-COLOR
 0xFF000000 val: TEXT-COLOR
 
@@ -48,8 +48,8 @@ var: oy
         draw-line
     } each
     1 TEXT-COLOR paint
-    1 xmax @ oy @ trans xmax @ >str draw-text
-    2 ox @ ymax @ trans ymax @ >str draw-text ;
+    1 xmax @ oy   @ trans 5 -         xmax @ >str draw-text
+    2 ox   @ ymax @ trans { 5 + } dip ymax @ >str draw-text ;
 
 : plotq ( q -- ) -> q
     clear-canvas
@@ -81,6 +81,7 @@ var: oy
     2 LINE-COLOR paint
     nil => px nil => py 1 => x
     ls { -> y
+        x @ y trans 5 draw-circle
         px @ nil != if
             px @ py @ trans x @ y trans draw-line
         then
