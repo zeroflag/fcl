@@ -30,6 +30,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
 
     public static Num parse(String str) {
         try {
+            if (str.startsWith("0x"))
+                return new Num(Long.parseLong(str.substring(2), 16));
             return new Num(Long.parseLong(str));
         } catch (NumberFormatException e1) {
             try {

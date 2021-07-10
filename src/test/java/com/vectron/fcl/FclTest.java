@@ -805,6 +805,14 @@ public class FclTest {
     }
 
     @Test
+    public void testListMinMax() {
+        assertEquals(17, evalPop("[ 1 -2 3.5 -3 17 3 -1 ] maxl").intValue());
+        assertEquals(-3, evalPop("[ 1 -2 3.5 -3 17 3 -1 ] minl").intValue());
+        assertEquals(Nil.INSTANCE, evalPop("[ ] minl"));
+        assertEquals(Nil.INSTANCE, evalPop("[ ] maxl"));
+    }
+
+    @Test
     public void testRanges() {
         assertEquals("[ 1 2 3 4 5 ]", evalPop(": tst 1 5 .. { } map ; tst").toString());
         assertEquals("[ 1 3 5 7 9 ]", evalPop(": tst 1 10 2 ... { } map ; tst").toString());

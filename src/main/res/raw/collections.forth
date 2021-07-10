@@ -100,3 +100,13 @@
 : replace ( s old new -- s ) swap rot :replace/ss jvm-call-method ;
 : concat ( s1 s2 -- s ) swap :concat/O jvm-call-method ;
 : >str ( o -- s ) :asStr jvm-call-method ;
+
+: minl ( ls -- n )
+    nil => result
+    { result @ nil != if result @ min then result ! } each
+    result @ ;
+
+: maxl ( ls -- n )
+    nil => result
+    { result @ nil != if result @ max then result ! } each
+    result @ ;
