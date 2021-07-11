@@ -1236,6 +1236,16 @@ public class FclTest {
         assertEquals(true, evalPop(": tst :my-symbol :my-symbol = ; tst").boolValue());
     }
 
+    @Test
+    public void testPredicateWords() {
+        eval(": octal? ( token -- ) 0 at '&' = ;\n" +
+                ": lit-oct ( token -- n ) immediate match: octal?\n" +
+                "   1 over size substr 8 swap :java.lang.Long/parseLong/si jvm-call-static\n" +
+                "   interpret? not if ['] lit , , then ;\n");
+        assertEquals(177, evalPop("&261").intValue());
+        assertEquals(169, evalPop(": tst &261 &10 - ; tst ").intValue());
+    }
+
     private String transcript() {
         return transcript.content();
     }

@@ -81,9 +81,10 @@ var: oy
     2 LINE-COLOR paint
     nil => px nil => py 1 => x
     ls { -> y
-        x @ y trans 5 draw-circle
         px @ nil != if
             px @ py @ trans x @ y trans draw-line
+            x @ y trans 3 draw-circle
+            \ 0 x @ y trans 20 + y >str draw-text
         then
         x @ px ! y py !
         x inc

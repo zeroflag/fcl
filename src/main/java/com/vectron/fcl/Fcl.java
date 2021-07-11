@@ -29,7 +29,7 @@ public class Fcl {
     private static final String EXIT = "exit";
     private final int SCRATCH_SIZE = 1024;
     private enum Mode { COMPILE, INTERPRET }
-    private final Dictionary dict = new Dictionary();
+    private final Dictionary dict;
     private final FclStack rstack = new FclStack();
     private final JvmInterOp interOp;
     private final FclStack stack;
@@ -47,6 +47,7 @@ public class Fcl {
         private final String name;
         private boolean visible = true;
         private boolean immediate = false;
+        private Word predicate;
 
         public ColonDef(int address, String name) {
             this.address = address;
@@ -71,11 +72,6 @@ public class Fcl {
         }
 
         @Override
-        public boolean visible() {
-            return visible;
-        }
-
-        @Override
         public boolean immediate() {
             return immediate;
         }
@@ -83,6 +79,26 @@ public class Fcl {
         @Override
         public void immediate(boolean isImmediate) {
             immediate = isImmediate;
+        }
+
+        @Override
+        public void predicate(Word word) {
+            this.predicate = word;
+        }
+
+        @Override
+        public boolean match(String name, Fcl fcl) {
+            return visible && (this.name.equals(name) || predicateMatch(name, fcl));
+        }
+
+        private boolean predicateMatch(String name, Fcl fcl) {
+            if (predicate == null) return false;
+            fcl.push(new Str(name));
+            predicate.enter();
+            boolean match = fcl.pop().boolValue();
+            if (match)
+                fcl.push(new Str(name));
+            return match;
         }
 
         @Override
@@ -156,11 +172,6 @@ public class Fcl {
         }
 
         @Override
-        public boolean visible() {
-            return visible;
-        }
-
-        @Override
         public boolean immediate() {
             return false;
         }
@@ -168,6 +179,16 @@ public class Fcl {
         @Override
         public void immediate(boolean isImmediate) {
             throw new Aborted("Cannot make immediate val");
+        }
+
+        @Override
+        public void predicate(Word word) {
+            throw new Aborted("var does not support predicate");
+        }
+
+        @Override
+        public boolean match(String name, Fcl fcl) {
+            return visible && this.name.equals(name);
         }
 
         @Override
@@ -250,11 +271,6 @@ public class Fcl {
         }
 
         @Override
-        public boolean visible() {
-            return visible;
-        }
-
-        @Override
         public boolean immediate() {
             return false;
         }
@@ -262,6 +278,16 @@ public class Fcl {
         @Override
         public void immediate(boolean isImmediate) {
             throw new Aborted("Cannot make immediate val");
+        }
+
+        @Override
+        public void predicate(Word word) {
+            throw new Aborted("val does not support predicate");
+        }
+
+        @Override
+        public boolean match(String name, Fcl fcl) {
+            return visible && this.name.equals(name);
         }
 
         @Override
@@ -329,6 +355,7 @@ public class Fcl {
     }
 
     public Fcl(FclStack stack, int heapSize, Transcript transcript) {
+        this.dict = new Dictionary(this);
         this.stack = stack;
         this.heap = new Object[heapSize];
         this.interOp = new JvmInterOp(stack);
@@ -386,6 +413,7 @@ public class Fcl {
         addPrimitive("here", () -> stack.push(new Num(dp)));
         addPrimitive("dp!", () -> dp = stack.pop().intValue() );
         addPrimitive("interpret", () -> mode = Mode.INTERPRET);
+        addPrimitive("interpret?", () -> stack.push(mode == Mode.INTERPRET ? Bool.TRUE : Bool.FALSE));
         addPrimitive("trace", () -> trace = stack.pop().boolValue());
         addPrimitive("lit", () -> stack.push((Obj)heap[ip++]));
         addPrimitive(">r", () -> rstack.push(stack.pop()));
@@ -398,6 +426,8 @@ public class Fcl {
         addPrimitive("[']", () -> stack.push((Word)heap[ip++]));
         addPrimitive("`", () -> { Word word = dict.at(word()); stack.push(word == null ? Nil.INSTANCE : word); });
         addPrimitive("immediate", () -> dict.lastWord().immediate(true), true);
+        addPrimitive("lastword", () -> stack.push(dict.lastWord()));
+        addPrimitive("set-predicate", () -> ((Word)stack.pop()).predicate((Word)stack.pop()));
         addPrimitive(".", () -> show(stack.pop()));
         addPrimitive("jvm-call-static", interOp::jvmCallStatic);
         addPrimitive("jvm-call-method", interOp::jvmCallMethod);
@@ -655,6 +685,10 @@ public class Fcl {
 
     public Obj pop() {
         return stack.pop();
+    }
+
+    public void push(Obj obj) {
+        stack.push(obj);
     }
 
     public int stackSize() {

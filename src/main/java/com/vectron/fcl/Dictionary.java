@@ -9,8 +9,10 @@ import java.util.Set;
 
 public class Dictionary {
     private final List<Word> dict = new ArrayList<>();
+    private final Fcl fcl;
 
-    public Dictionary() {
+    public Dictionary(Fcl fcl) {
+        this.fcl = fcl;
     }
 
     public void add(Word word) {
@@ -20,7 +22,7 @@ public class Dictionary {
     public Word at(String name) {
         for (int i = dict.size() - 1; i >= 0; i--) {
             Word each = dict.get(i);
-            if (each.visible() && name.equals(each.name()))
+            if (each.match(name, fcl))
                 return each;
         }
         return null;

@@ -13,7 +13,8 @@
     } each
     tbl ;
 
-: ms ( n -- ) 'java.lang.Thread/sleep/l' jvm-call-static ;
-
+: ms ( n -- ) :java.lang.Thread/sleep/l jvm-call-static ;
 : tone ( hz ms -- ) swap :com.vectron.forthcalc.support.Tone/play/di jvm-call-static ;
 : torch ( n -- ) :com.vectron.forthcalc.support.Torch/toggle/O jvm-call-static ;
+
+: match: immediate ` lastword set-predicate ;

@@ -1,5 +1,7 @@
 package com.vectron.fcl.types;
 
+import com.vectron.fcl.Fcl;
+import com.vectron.fcl.exceptions.Aborted;
 import com.vectron.fcl.exceptions.TypeMismatched;
 
 import static com.vectron.fcl.Fcl.STRICT;
@@ -21,13 +23,18 @@ public class Primitive implements Word {
     }
 
     @Override
-    public boolean visible() {
-        return visible;
+    public boolean immediate() {
+        return immediate;
     }
 
     @Override
-    public boolean immediate() {
-        return immediate;
+    public void predicate(Word word) {
+        throw new Aborted("primitive does not support predicate");
+    }
+
+    @Override
+    public boolean match(String name, Fcl fcl) {
+        return visible && this.name.equals(name);
     }
 
     @Override
