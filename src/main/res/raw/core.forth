@@ -24,6 +24,7 @@
 : else immediate ['] jmp , (dummy) swap resolve ;
 : then immediate resolve ;
 : begin immediate here ;
+: again immediate ['] jmp , (offset) ;
 : while immediate ['] jmp#f , (dummy) ;
 : repeat immediate swap ['] jmp , (offset)  resolve ;
 : until immediate ['] jmp#f , (offset) ;

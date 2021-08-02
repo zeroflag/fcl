@@ -85,6 +85,7 @@
 : remove ( l o -- l ) swap :remove/O jvm-call-method ;
 : keys ( d -- l ) :keys jvm-call-method ;
 : values ( d -- l ) :values jvm-call-method ;
+: sum ( c -- n ) 0 swap { + } each ;
 
 : ... ( lower upper step -- lst ) :com.vectron.fcl.types.Range/create/NNN jvm-call-static ;
 : .. ( lower upper -- lst ) 1  ... ;

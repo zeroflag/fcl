@@ -67,6 +67,7 @@ public class FclTest {
 
     @After
     public void tearDown() throws Exception {
+        System.out.println("Transcript: " + transcript.content());
         assertEquals(0, fcl.stackSize());
         assertEquals(0, fcl.rStackSize());
         assertEquals(0, evalPop("psp @").longValue());
@@ -210,12 +211,19 @@ public class FclTest {
     @Test
     public void testFinance() {
         assertEquals(1216.65, evalPop("1000 4 5 cin1").doubleValue(), 0.01);
-        assertEquals(815.37, evalPop("1000 4 5 dis").doubleValue(), 0.01);
+        assertEquals(821.93, evalPop("1000 4 5 dis").doubleValue(), 0.01);
+        assertEquals(558.39, evalPop("1000 6 10 dis").doubleValue(), 0.01);
         evalDoubles("1000.0 4 5 100 cin2", asList(1000.0, 2240.0, 3529.6, 4870.784, 6265.61536, 7716.2399744));
         assertEquals(15, evalPop("100 tip1").doubleValue(), 0.01);
         evalDoubles("100 1 tip2", asList(115.0, 15.0));
         evalDoubles("100 3 tip2", asList(38.33, 5));
         evalDoubles("3421 5 tip2", asList(786.83, 102.63));
+        assertEquals(-371.68, evalPop("[ -1000 50 100 150 200 250 ] 5 npv").doubleValue(), 0.01);
+        assertEquals(-371.68, evalPop("-1000 50 100 150 200 250 5 npv*").doubleValue(), 0.01);
+        assertEquals(-250, evalPop("[ -1000 50 100 150 200 250 ] 0 npv").doubleValue(), 0.01);
+        assertEquals(12.006, evalPop("[ -500 50 100 150 200 250 ] irr").doubleValue(), 0.01);
+        assertEquals(-7.431, evalPop("[ -1000 50 100 150 200 250 ] irr").doubleValue(), 0.01);
+        assertEquals(-28.482, evalPop("-10 irr-guess ! -5000 200 230 400 202 450 irr*").doubleValue(), 0.01);
     }
 
     private void evalDoubles(String script, List<Number> expected) {
@@ -809,6 +817,8 @@ public class FclTest {
         assertEquals(true, evalPop("m 2 at").boolValue());
         assertEquals(1, evalPop("m 2 index-of").intValue());
         assertEquals(0, evalPop("m clear m size").intValue());
+        assertEquals(6, evalPop("[ 4 -1 3 ] sum").intValue());
+        assertEquals(1+2+3+4+5, evalPop("1 5 .. sum").intValue());
     }
 
     @Test

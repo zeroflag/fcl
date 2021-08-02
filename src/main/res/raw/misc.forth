@@ -18,3 +18,33 @@
 : torch ( n -- ) :com.vectron.forthcalc.support.Torch/toggle/O jvm-call-static ;
 
 : match: immediate ` lastword set-predicate ;
+
+: npv ( cashflow rate -- n )
+    -> rate 0 => year
+    { rate year @ dis year inc } map sum ;
+
+: npv* ( .. rate -- n ) >r list* r> npv ;
+
+: npv/npv' ( cashflow rate -- npv/npv' )
+    1+ -> rate 0 => n
+    0 0 rot {
+        dup  ( each ) n @ neg * rate n @ 1+ neg pow * ( npv' ) rot +
+        swap ( each ) rate n @ pow /                  ( npv  ) rot +
+        swap
+        n inc
+    } each / ;
+
+var: irr-guess 0 irr-guess !
+
+: irr ( cashflow -- n/nil )
+    -> cashflow irr-guess @ 100 / => guess
+    1000 0 do
+        guess @ cashflow guess @ npv/npv' - ( new guess )
+        dup guess @ - abs 0.01 < if
+            100 * unloop exit
+        then
+        guess !
+    loop
+    nil ;
+
+: irr* ( cashflow -- n ) list* irr ;

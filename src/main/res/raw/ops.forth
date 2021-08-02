@@ -18,7 +18,7 @@
         ( years ) 1 -
     repeat
     drop ( years ) r> r> 2drop ;
-: dis ( b i n -- t ) swap 100 / neg 1+ swap pow * ;
+: dis ( b i n -- t ) swap 100 / 1+ swap pow / ;
 : tip1 ( n -- n ) 15 percent ;
 : tip2 ( bill split --  total tip ) / dup 115 percent swap 15 percent ;
 ( trigonometry )
