@@ -7,7 +7,7 @@
 : 2swap rot >r rot r> ;
 : 2rot swap >r >r 2swap r> r> swap 2swap ;
 : -2rot 2rot 2rot ;
-: 2over 2swap 2dup 2rot 2swap ;
+: 2over 2swap 2dup -2rot ;
 : tuck swap over ;
 : != = not ;
 : >= < not ;

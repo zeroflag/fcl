@@ -130,6 +130,7 @@ public class FclTest {
     public void testJuggling() { // http://sovietov.com/app/forthwiz.html
         assertEquals(asList(2l, 1l), evalGetStack("1 2 swap"));
         assertEquals(asList(1l, 2l, 1l), evalGetStack("1 2 over"));
+        assertEquals(asList(1l, 2l, 3l, 4l, 1l, 2l), evalGetStack("1 2 3 4 2over"));
         assertEquals(asList(3l, 3l), evalGetStack("3 dup"));
         assertEquals(asList(3l, 4l, 3l, 4l), evalGetStack("3 4 2dup"));
         assertEquals(asList(6l), evalGetStack("5 6 nip"));
