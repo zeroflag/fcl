@@ -68,6 +68,7 @@ public class Juggler {
         this.rstack = new Stack<>();
         this.code = new ArrayList<>();
         this.availableWords = populateWords(excluded);
+        this.code.add(0);
     }
 
     private List<Word> populateWords(Set<String> excluded) {
@@ -82,10 +83,6 @@ public class Juggler {
     private List<String> solve() {
         if (input.isEmpty() && output.isEmpty() || input.equals(output))
             return Collections.emptyList();
-
-        code.clear();
-        code.add(0);
-
         while (code.size() <= maxSteps) {
             if (goodCode(code))
                 return result(code);

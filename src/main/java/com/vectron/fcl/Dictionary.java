@@ -29,9 +29,9 @@ public class Dictionary {
     }
 
     public void remove(String name) {
-        Word exiting = at(name);
-        if (exiting != null)
-            dict.remove(exiting);
+        Word existing = at(name);
+        if (existing != null)
+            dict.remove(existing);
     }
 
     public Set<String> wordList() {
