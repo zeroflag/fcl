@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 import static com.vectron.fcl.types.Num.ONE;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class JugglerTest {
@@ -28,7 +29,7 @@ public class JugglerTest {
 
     @Test
     public void testSame() {
-        assertTrue(solve(asList(ONE), asList(ONE)).isEmpty());
+        assertTrue(solve(singletonList(ONE), singletonList(ONE)).isEmpty());
     }
 
     @Test
@@ -197,7 +198,7 @@ public class JugglerTest {
 
     private void assertSolution(String expected, String input, String output) {
         if (expected == null)
-            assertEquals(null, solve(parse(input), parse(output)));
+            assertNull(solve(parse(input), parse(output)));
         else
             assertEquals(Arrays.asList(expected.split(" ")), solve(parse(input), parse(output)));
     }
