@@ -6,9 +6,7 @@ import com.vectron.fcl.types.Obj;
 import com.vectron.fcl.types.Str;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -329,34 +327,6 @@ public class Juggler {
                 return true;
         }
         return false;
-    }
-
-    public final class LStack extends ArrayList<Obj> {
-        public LStack() {
-            super(10);
-        }
-
-        public LStack(final Collection<Obj> collection) {
-            super(collection);
-        }
-
-        public void push(Obj item) {
-            add(item);
-        }
-
-        public Obj pop() {
-            Obj top = peek();
-            remove(size() - 1);
-            return top;
-        }
-
-        public Obj peek() {
-            int size = size();
-            if (size == 0) {
-                throw new EmptyStackException();
-            }
-            return get(size - 1);
-        }
     }
 }
 

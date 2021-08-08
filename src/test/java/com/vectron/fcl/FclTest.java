@@ -45,6 +45,9 @@ public class FclTest {
 
     private void resetForth() throws IOException {
         fcl = new Fcl(new FclStack(), 524288, transcript);
+        fcl.addPrimitive("exchange", () -> {}, false);
+        fcl.addPrimitive("aux>", () -> {}, false);
+        fcl.addPrimitive(">aux", () -> {}, false);
         load("core.forth");
         load("ops.forth");
         load("locals.forth");

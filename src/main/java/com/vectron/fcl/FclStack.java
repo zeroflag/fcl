@@ -9,13 +9,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 
 public class FclStack {
     private static final Gson gson;
-    private final Stack<Obj> stack = new Stack<>();
+    private final LStack stack = new LStack();
 
     static {
         FclTypeAdapter typeAdapter = new FclTypeAdapter();
@@ -40,7 +40,7 @@ public class FclStack {
     }
 
     public boolean empty() {
-        return stack.empty();
+        return stack.size() == 0;
     }
 
     public void clean() {
@@ -81,8 +81,7 @@ public class FclStack {
             stream = fileStore.open(fileName(id));
             Obj[] loaded = gson.fromJson(new BufferedReader(new InputStreamReader(stream)), Obj[].class);
             stack.clear();
-            for (Obj each : loaded)
-                stack.add(each);
+            stack.addAll(Arrays.asList(loaded));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
