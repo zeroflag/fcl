@@ -89,6 +89,10 @@ public class FclTest {
         assertEquals(1157.625, evalPop("10.5 3 pow").doubleValue(), 0.01);
         assertEquals(asList(1l, 3l), evalGetStack("10 3 /mod"));
         assertEquals(asList(0l, 2l), evalGetStack("10 5 /mod"));
+        assertEquals(1, evalPop("10 3 mod").intValue());
+        assertEquals(3, evalPop("10 3 div").intValue());
+        assertEquals(0, evalPop("10 5 mod").intValue());
+        assertEquals(2, evalPop("10 5 div").intValue());
         assertEquals(7, evalPop("7 round").longValue());
         assertEquals(8, evalPop("7.5 round").longValue());
         assertEquals(7, evalPop("7.4 round").longValue());

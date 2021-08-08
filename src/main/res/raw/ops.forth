@@ -7,6 +7,8 @@
 : percent ( n n -- n ) * 100.0 / ;
 : odd?  2 /mod drop 0 != ;
 : even? 2 /mod drop 0  = ;
+: mod /mod drop ;
+: div /mod nip ;
 ( finance )
 : cin1 ( b i n -- t ) swap 100 / 1+ swap pow * ;
 : cin2 ( base interest years monthly-contribution -- .. )
