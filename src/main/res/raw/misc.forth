@@ -48,3 +48,9 @@ var: irr-guess 0 irr-guess !
     nil ;
 
 : irr* ( cashflow -- n ) list* irr ;
+
+var: juggler.steps 5 juggler.steps !
+[ ] val: juggler.exclude
+
+: juggler.solve ( steps exclude-list output-list input-list -- list/nil ) :com.vectron.fcl.Juggler/solve/TTTi jvm-call-static ;
+: wzd* ( stack1 stack2 -- list/nil ) list* exchange list* aux> juggler.steps @ juggler.exclude 2swap juggler.solve ;

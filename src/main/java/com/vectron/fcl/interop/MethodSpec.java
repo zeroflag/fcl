@@ -5,6 +5,7 @@ import com.vectron.fcl.exceptions.InterOpFailed;
 import com.vectron.fcl.types.Bool;
 import com.vectron.fcl.types.Dic;
 import com.vectron.fcl.types.JvmObj;
+import com.vectron.fcl.types.Lst;
 import com.vectron.fcl.types.Nil;
 import com.vectron.fcl.types.Num;
 import com.vectron.fcl.types.Obj;
@@ -115,6 +116,8 @@ class MethodSpec {
             params.add(value.doubleValue());
         else if (clazz == String.class)
             params.add((String)value.value());
+        else if (clazz == Lst.class)
+            params.add((Lst)value);
         else if (clazz == Dic.class)
             params.add((Dic)value);
         else if (clazz == Num.class)
@@ -137,6 +140,7 @@ class MethodSpec {
             case 's': return String.class;
             case 'm': return Map.class;
             case 't': return List.class;
+            case 'T': return Lst.class;
             case 'N': return Num.class;
             case 'O': return Obj.class;
             case 'M': return Dic.class;

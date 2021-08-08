@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 public class JugglerTest {
     private final Set<String> excluded = new HashSet<>();
+    private int maxSteps = 5;
 
     @Test
     public void testEmpty() {
@@ -148,8 +149,12 @@ public class JugglerTest {
 
     @Test
     public void testComplex4() {
+        assertSolution(">r nip over r>", "0 1 2 3", "0 2 0 3");
+        excluded.add("over");
         assertSolution("swap 2over drop 2swap nip", "0 1 2 3", "0 2 0 3");
+        excluded.remove("over");
         excluded.add("2over");
+        excluded.add("nip");
         assertSolution("rot drop >r over r>", "0 1 2 3", "0 2 0 3");
     }
 
@@ -178,8 +183,16 @@ public class JugglerTest {
         assertSolution(null, "0 1 2 3 4 5", "0 0 2 1");
     }
 
+    @Test
+    public void testNoSolution2() {
+        maxSteps = 6;
+        long started = System.currentTimeMillis();
+        assertSolution(null, "0 1 2 3 4 5 6 7 8", "10");
+        System.out.println(System.currentTimeMillis() - started);
+    }
+
     private List<String> solve(List<Obj> input, List<Obj> output) {
-        return Juggler.solve(input, output, excluded, 5);
+        return Juggler.solve(input, output, excluded, maxSteps);
     }
 
     private void assertSolution(String expected, String input, String output) {

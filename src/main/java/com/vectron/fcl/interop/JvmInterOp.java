@@ -28,7 +28,7 @@ public class JvmInterOp {
         Obj receiver = stack.pop();
         MethodSpec spec = MethodSpec.parseDynamic(
                 methodName,
-                receiver instanceof JvmObj ? ((JvmObj) receiver).value() : receiver);
+                receiver instanceof JvmObj ? receiver.value() : receiver);
         spec.invoke(stack);
     }
 
@@ -37,7 +37,7 @@ public class JvmInterOp {
         Obj receiver = stack.pop();
         MethodSpec spec = MethodSpec.parseDynamic(
                 methodName,
-                receiver instanceof JvmObj ? ((JvmObj) receiver).value() : receiver);
+                receiver instanceof JvmObj ? receiver.value() : receiver);
         stack.push(spec.exists() ? Bool.TRUE : Bool.FALSE);
     }
 

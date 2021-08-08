@@ -42,12 +42,12 @@ public class Lst implements Obj, ArithmeticOperand {
     }
 
     @Override
-    public Object value() {
+    public List<Obj> value() {
         return value;
     }
 
     @Override
-    public Object unwrap() {
+    public List<Object> unwrap() {
         List<Object> result = new ArrayList<>();
         for (Obj each : value)
             result.add(each.unwrap());

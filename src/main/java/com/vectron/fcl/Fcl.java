@@ -532,7 +532,7 @@ public class Fcl {
         addPrimitive(name, code, false);
     }
 
-    private void addPrimitive(String name, Runnable code, boolean immediate) {
+    public void addPrimitive(String name, Runnable code, boolean immediate) {
         Primitive word = new Primitive(name, code);
         word.immediate(immediate);
         dict.add(word);

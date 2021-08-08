@@ -1,19 +1,23 @@
 package com.vectron.fcl;
 
+import com.vectron.fcl.types.Lst;
+import com.vectron.fcl.types.Nil;
 import com.vectron.fcl.types.Obj;
+import com.vectron.fcl.types.Str;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
 public class Juggler {
     private final List<Obj> input;
     private final List<Obj> output;
-    private final Stack<Obj> stack;
-    private final Stack<Obj> rstack;
+    private final LStack stack;
+    private final LStack rstack;
     private final Set<Obj> uniqueOutput;
     private final List<Integer> code;
     private final List<Word> availableWords;
@@ -54,6 +58,21 @@ public class Juggler {
         }
     }
 
+    public static Obj solve(Lst input, Lst output, Lst excluded, int maxSteps) {
+        List<String> words = solve(input.value(), output.value(), filter(excluded.value()), maxSteps);
+        if (words == null) return Nil.INSTANCE;
+        Lst result = new Lst();
+        for (String each : words)
+            result.append(new Str(each));
+        return result;
+    }
+
+    private static Set<String> filter(List<Obj> excluded) {
+        Set<String> result = new HashSet<>();
+        for (Obj each : excluded) result.add(each.asStr().value());
+        return result;
+    }
+
     public static List<String> solve(List<Obj> input, List<Obj> output, Set<String> excluded, int maxSteps) {
         Juggler juggler = new Juggler(input, output, excluded, maxSteps);
         return juggler.solve();
@@ -64,8 +83,8 @@ public class Juggler {
         this.output = output;
         this.maxSteps = maxSteps;
         this.uniqueOutput = new HashSet<>(output);
-        this.stack = new Stack<>();
-        this.rstack = new Stack<>();
+        this.stack = new LStack();
+        this.rstack = new LStack();
         this.code = new ArrayList<>();
         this.availableWords = populateWords(excluded);
         this.code.add(0);
@@ -98,8 +117,7 @@ public class Juggler {
         while (code.get(i) > max) {
             code.set(i, 0);
             if (i > 0) {
-                i--;
-                code.set(i, code.get(i) +1);
+                code.set(--i, code.get(i) +1);
             } else {
                 code.add(0, 0);
             }
@@ -110,16 +128,16 @@ public class Juggler {
         stack.clear();
         stack.addAll(input);
         rstack.clear();
-        List<Stack<Obj>> stackHistory = new ArrayList<>();
-        List<Stack<Obj>> rstackHistory = new ArrayList<>();
+        List<LStack> stackHistory = new ArrayList<>();
+        List<LStack> rstackHistory = new ArrayList<>();
 
         for (int i = 0; i < code.size(); i++) {
             if (!nthWord(code.get(i)).eval(this) || nop() || cycle(stackHistory, rstackHistory)) {
                 skip(i, code);
                 return false;
             }
-            stackHistory.add(copy(stack));
-            rstackHistory.add(copy(rstack));
+            stackHistory.add(new LStack(stack));
+            rstackHistory.add(new LStack(rstack));
         }
         return rstack.isEmpty() && stack.equals(output);
     }
@@ -135,7 +153,7 @@ public class Juggler {
         }
     }
 
-    private boolean cycle(List<Stack<Obj>> stackHistory, List<Stack<Obj>> rstackHistory) {
+    private boolean cycle(List<LStack> stackHistory, List<LStack> rstackHistory) {
         for (int i = 0; i < stackHistory.size(); i++) {
             if (stackHistory.get(i).equals(stack) && rstackHistory.get(i).equals(rstack))
                 return true;
@@ -145,12 +163,6 @@ public class Juggler {
 
     private boolean nop() {
         return rstack.isEmpty() && stack.equals(input);
-    }
-
-    private Stack<Obj> copy(Stack<Obj> stack) {
-        Stack<Obj> result = new Stack<>();
-        result.addAll(stack);
-        return result;
     }
 
     private List<String> result(List<Integer> code) {
@@ -165,7 +177,7 @@ public class Juggler {
     }
 
     private boolean dup() {
-        if (stack.empty()) return false;
+        if (stack.size() == 0) return false;
         stack.push(pick(1));
         return true;
     }
@@ -185,7 +197,7 @@ public class Juggler {
     }
 
     private boolean drop() {
-        if (stack.empty()) return false;
+        if (stack.size() == 0) return false;
         stack.pop();
         return !missing();
     }
@@ -313,10 +325,38 @@ public class Juggler {
 
     private boolean missing() {
         for (Obj each : uniqueOutput) {
-            if (!stack.contains(each) && !stack.contains(each))
+            if (!stack.contains(each) && !rstack.contains(each))
                 return true;
         }
         return false;
+    }
+
+    public final class LStack extends ArrayList<Obj> {
+        public LStack() {
+            super(10);
+        }
+
+        public LStack(final Collection<Obj> collection) {
+            super(collection);
+        }
+
+        public void push(Obj item) {
+            add(item);
+        }
+
+        public Obj pop() {
+            Obj top = peek();
+            remove(size() - 1);
+            return top;
+        }
+
+        public Obj peek() {
+            int size = size();
+            if (size == 0) {
+                throw new EmptyStackException();
+            }
+            return get(size - 1);
+        }
     }
 }
 
