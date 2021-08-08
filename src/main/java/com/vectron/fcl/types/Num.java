@@ -269,4 +269,10 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
                 ? Double.compare(doubleValue(), ((Num) other).doubleValue())
                 : -1;
     }
+
+    public boolean isReal() {
+        if (value instanceof Double)
+            return !((Double) value).isNaN() && !((Double) value).isInfinite();
+        return true;
+    }
 }
