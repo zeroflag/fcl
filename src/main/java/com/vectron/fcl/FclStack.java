@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FclStack {
     private static final Gson gson;
-    private final LStack stack = new LStack();
+    private final LStack<Obj> stack = new LStack<>();
 
     static {
         FclTypeAdapter typeAdapter = new FclTypeAdapter();

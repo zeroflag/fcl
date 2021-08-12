@@ -14,8 +14,8 @@ import java.util.Set;
 public class Juggler {
     private final List<Obj> input;
     private final List<Obj> output;
-    private final LStack stack;
-    private final LStack rstack;
+    private final LStack<Obj> stack;
+    private final LStack<Obj> rstack;
     private final Set<Obj> uniqueOutput;
     private final List<Integer> code;
     private final List<Word> availableWords;
@@ -81,8 +81,8 @@ public class Juggler {
         this.output = output;
         this.maxSteps = maxSteps;
         this.uniqueOutput = new HashSet<>(output);
-        this.stack = new LStack();
-        this.rstack = new LStack();
+        this.stack = new LStack<>();
+        this.rstack = new LStack<>();
         this.code = new ArrayList<>();
         this.availableWords = populateWords(excluded);
         this.code.add(0);
