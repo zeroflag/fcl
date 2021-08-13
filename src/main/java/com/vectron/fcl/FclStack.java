@@ -102,4 +102,15 @@ public class FclStack {
     private String fileName(String id) {
         return String.format("stack%s.json", id);
     }
+
+    public void populate(FclStack other) {
+        stack.clear();
+        stack.addAll(other.stack);
+    }
+
+    public FclStack copy() {
+        FclStack copy = new FclStack();
+        copy.populate(this);
+        return copy;
+    }
 }
