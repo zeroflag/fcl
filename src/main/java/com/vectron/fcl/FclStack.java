@@ -2,6 +2,8 @@ package com.vectron.fcl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.stream.JsonReader;
 import com.vectron.fcl.types.Obj;
 
 import java.io.BufferedReader;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class FclStack {
     private static final Gson gson;
@@ -81,7 +85,7 @@ public class FclStack {
             stream = fileStore.open(fileName(id));
             Obj[] loaded = gson.fromJson(new BufferedReader(new InputStreamReader(stream)), Obj[].class);
             stack.clear();
-            stack.addAll(Arrays.asList(loaded));
+            stack.addAll(asList(loaded));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -95,8 +99,17 @@ public class FclStack {
         }
     }
 
+    public void load(JsonReader jsonReader) {
+        stack.clear();
+        stack.addAll(asList(gson.fromJson(jsonReader, Obj[].class)));
+    }
+
     public void save(FileStore fileStore, String id) {
         fileStore.save(gson.toJson(stack.toArray(new Obj[0])).getBytes(), fileName(id));
+    }
+
+    public JsonElement toJsonTree() {
+        return gson.toJsonTree(stack.toArray(new Obj[0]));
     }
 
     private String fileName(String id) {
