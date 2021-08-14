@@ -23,6 +23,8 @@
 : dis ( b i n -- t ) swap 100 / 1+ swap pow / ;
 : tip1 ( n -- n ) 15 percent ;
 : tip2 ( bill split --  total tip ) / dup 115 percent swap 15 percent ;
+: fire ( monthly-expense real-interest-rate -- money-needed ) 100 / swap 12 * swap / ;
+: ri ( nominal-interest-rate inflation-rate -- real-interest-rate ) 100 / 1+ swap 100 / 1+ swap / 1- 100 * ;
 ( trigonometry )
 : pi ( n -- n ) :java.lang.Math/PI jvm-static-var ;
 : sin ( n -- n ) :java.lang.Math/sin/d jvm-call-static ;

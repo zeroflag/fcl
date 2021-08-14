@@ -232,6 +232,8 @@ public class FclTest {
         assertEquals(12.006, evalPop("[ -500 50 100 150 200 250 ] irr").doubleValue(), 0.01);
         assertEquals(-7.431, evalPop("[ -1000 50 100 150 200 250 ] irr").doubleValue(), 0.01);
         assertEquals(-28.482, evalPop("-10 irr-guess ! -5000 200 230 400 202 450 irr*").doubleValue(), 0.01);
+        assertEquals(120000000, evalPop("400000 4 fire").doubleValue(), 0.01);
+        assertEquals(1.96, evalPop("4 2 ri").doubleValue(), 0.01);
     }
 
     private void evalDoubles(String script, List<Number> expected) {
