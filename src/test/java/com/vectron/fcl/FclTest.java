@@ -83,6 +83,8 @@ public class FclTest {
         assertEquals(4, evalPop("6 2 -").longValue());
         assertEquals(-3, evalPop("7 10 -").longValue());
         assertEquals(2.0, evalPop("100 50 /").doubleValue(), 0.01);
+        assertEquals("Infinity", evalPop("100 00 /").toString());
+        assertEquals("Infinity", evalPop("100.0 00 /").toString());
         assertEquals(101, evalPop("100 1+").longValue());
         assertEquals(256, evalPop("2 8 pow").doubleValue(), 0.01);
         assertEquals(65536, evalPop("2 16 pow").doubleValue(), 0.01);
@@ -1006,7 +1008,7 @@ public class FclTest {
 
         assertEquals("[ 3 6 9 ]", evalPop("3 [ 1 2 3 ] *").toString());
         assertEquals("[ 3 6 9 ]", evalPop("[ 1 2 3 ] 3 *").toString());
-        assertEquals("[ 1 2 3 ]", evalPop("[ 3 6 9 ] 3 /").toString());
+        assertEquals("[ 1.0 2.0 3.0 ]", evalPop("[ 3 6 9 ] 3 /").toString());
         assertEquals("[ 4 5 6 ]", evalPop("3 [ 1 2 3 ] +").toString());
         assertEquals("[ 4 5 6 ]", evalPop("[ 1 2 3 ] 3 +").toString());
         assertEquals("[ 1 2 3 ]", evalPop("[ 4 5 6 ] 3 -").toString());

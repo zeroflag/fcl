@@ -3,7 +3,9 @@ package com.vectron.fcl.types;
 import com.vectron.fcl.exceptions.NotUnderstood;
 import com.vectron.fcl.exceptions.TypeMismatched;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.vectron.fcl.Fcl.STRICT;
@@ -12,12 +14,16 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
     public static final Num ZERO = new Num(0);
     public static final Num ONE = new Num(1);
     public static final Num NAN = new Num(Double.NaN);
-    private static final NumberFormat format = NumberFormat.getNumberInstance();
+    private static final DecimalFormat format;
     private final Number value;
 
     static {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        symbols.setDecimalSeparator('.');
+        symbols.setGroupingSeparator(' ');
+        format = new DecimalFormat("###,###.##", symbols);
         format.setMaximumFractionDigits(4);
-        format.setGroupingUsed(false);
+        format.setGroupingUsed(true);
         format.setParseIntegerOnly(false);
     }
 
@@ -46,12 +52,17 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
 
     @Override
     public String toString() {
-        if (value instanceof Long) {
+        if (value instanceof Long)
             return Long.toString((Long) value);
-        } else if (value instanceof Double) {
-            return format.format(value);
-        }
+        else if (value instanceof Double)
+            return Double.toString((Double)value);
         return value.toString();
+    }
+
+    public String display() {
+        return value instanceof Long || value instanceof Double
+                ? format.format(value)
+                : value.toString();
     }
 
     @Override

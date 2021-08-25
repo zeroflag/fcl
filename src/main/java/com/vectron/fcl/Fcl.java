@@ -492,8 +492,8 @@ public class Fcl {
         }
     }
 
-    private void show(Obj pop) {
-        transcript.show(pop.asStr().value());
+    private void show(Obj item) {
+        transcript.show(item == null ? "null" : item.asStr().value());
         transcript.cr();
     }
 

@@ -15,7 +15,7 @@
 
 : ms ( n -- ) :java.lang.Thread/sleep/l jvm-call-static ;
 : tone ( hz ms -- ) swap :com.vectron.forthcalc.support.Tone/play/di jvm-call-static ;
-: torch ( n -- ) :com.vectron.forthcalc.support.Torch/toggle/O jvm-call-static ;
+: torch ( n -- n ) :com.vectron.forthcalc.support.Torch/toggle/O jvm-call-static ;
 
 : match: immediate ` lastword set-predicate ;
 
@@ -54,3 +54,6 @@ var: juggler.steps 5 juggler.steps !
 
 : juggler.solve ( steps exclude-list output-list input-list -- list/nil ) :com.vectron.fcl.Juggler/solve/TTTi jvm-call-static ;
 : wzd* ( stack1 stack2 -- list/nil ) list* exchange list* aux> juggler.steps @ juggler.exclude 2swap juggler.solve ;
+
+: udp-send-byte ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendByte/Nis jvm-call-static ;
+: udp-send-str ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendStr/sis jvm-call-static ;
