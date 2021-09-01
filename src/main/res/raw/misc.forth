@@ -19,11 +19,13 @@
 
 : match: immediate ` lastword set-predicate ;
 
+: round* { round } map* ;
+
 : npv ( cashflow rate -- n )
     -> rate 0 => year
     { rate year @ dis year inc } map sum ;
 
-: npv* ( .. rate -- n ) >r list* r> npv ;
+: npv* ( .. rate -- n ) >r >list* r> npv ;
 
 : npv/npv' ( cashflow rate -- npv/npv' )
     1+ -> rate 0 => n
@@ -47,13 +49,13 @@ var: irr-guess 0 irr-guess !
     loop
     nil ;
 
-: irr* ( cashflow -- n ) list* irr ;
+: irr* ( cashflow -- n ) >list* irr ;
 
 var: juggler.steps 5 juggler.steps !
 [ ] val: juggler.exclude
 
 : juggler.solve ( steps exclude-list output-list input-list -- list/nil ) :com.vectron.fcl.Juggler/solve/TTTi jvm-call-static ;
-: wzd* ( stack1 stack2 -- list/nil ) list* exchange list* aux> juggler.steps @ juggler.exclude 2swap juggler.solve ;
+: wzd* ( stack1 stack2 -- list/nil ) >list* exchange >list* aux> juggler.steps @ juggler.exclude 2swap juggler.solve ;
 
 : udp-send-byte ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendByte/Nis jvm-call-static ;
 : udp-send-str ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendStr/sis jvm-call-static ;

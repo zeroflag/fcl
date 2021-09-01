@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -857,6 +858,8 @@ public class FclTest {
         assertEquals(55, evalPop(": tst 0 1 10 .. { + } each ; tst").intValue());
         assertEquals("[ 1 3 5 7 9 ]", evalPop(": tst 1 10 .. { odd? } filter ; tst").toString());
         assertEquals("[ 100 102 104 ]", evalPop(": tst 100 105 .. { even? } filter ; tst").toString());
+        assertEquals(asList(1l, 4l, 9l), evalGetStack(": tst 1 2 3 { dup * } map* ; tst"));
+        assertEquals(asList(1l, 2l, 4l), evalGetStack("1.1 2.2 3.8 round*"));
     }
 
     @Test
@@ -880,7 +883,7 @@ public class FclTest {
         assertEquals("[ 'a' 'c' ]", evalPop("[ 'a' 'b' 'c' ] dup 'b' remove").toString());
         assertEquals(asList(1l, 2l, 3l, 4l), evalGetStack("[ 1 2 3 4 ] peel"));
         assertEquals(asList(1l, 2l, 3l, 4l), evalGetStack(": tst [ 1 2 3 4 ] peel ; tst"));
-        assertEquals("[ 1 2 3 4 ]", evalPop("[ 1 2 3 4 ] peel list*").toString());
+        assertEquals("[ 1 2 3 4 ]", evalPop("[ 1 2 3 4 ] peel >list*").toString());
     }
 
     @Test
@@ -906,9 +909,9 @@ public class FclTest {
         assertEquals(asList("b", 2l, "a", 1l),
                 evalGetStack("#[ 'a' 1 'b' 2 ]# peel#"));
         assertEquals("#[ 'b' 2 'a' 1 ]#",
-                evalPop("'a' 1 'b' 2 map*").toString());
+                evalPop("'a' 1 'b' 2 >map*").toString());
         assertEquals("#[ 'a' 1 'b' 2 ]#",
-                evalPop("#[ 'a' 1 'b' 2 ]# peel# map*").toString());
+                evalPop("#[ 'a' 1 'b' 2 ]# peel# >map*").toString());
         assertEquals("[ 'a' 1 ]",
                 evalPop("#[ 'a' 1 'b' 2 ]# peel nip").toString());
         assertEquals("[ 'b' 2 ]",
@@ -979,10 +982,10 @@ public class FclTest {
             resetForth();
         }
         try {
-            eval("1 map*");
+            eval("1 >map*");
             fail("expected abort");
         } catch (Aborted e) {
-            assertEquals("expected even number of items for a map*", e.getMessage());
+            assertEquals("expected even number of items for a >map*", e.getMessage());
             resetForth();
         }
     }

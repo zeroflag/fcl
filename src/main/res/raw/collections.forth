@@ -58,16 +58,15 @@
 : peel ( l -- .. ) -> lst lst {  } each ;
 : peel# ( m -- .. ) -> m m { dup 1st swap 2nd } each ;
 
-: list* ( .. -- l )
+: >list* ( .. -- l )
     <list> -> lst
     depth 0 do lst swap add loop
     lst reverse ;
 
-: map* ( .. -- m )
-    depth odd? if 'expected even number of items for a map*' abort then
+: >map* ( .. -- m )
+    depth odd? if 'expected even number of items for a >map*' abort then
     <map> -> m
     depth 2 / 0 do m -rot put loop
-    m .
     m ;
 
 : #[ ( -- ) depth >r rswap ;
@@ -111,3 +110,5 @@
     nil => result
     { result @ nil != if result @ max then result ! } each
     result @ ;
+
+: map* ( .. q -- .. ) >r >list* r> map peel ;

@@ -284,7 +284,7 @@ A list is a dynamic, ordered data structed. `[` and `]` are Forth words, so a wh
 ```
   
 ```forth
-1 2 3 4 5 list* \ creates a new list and loads all items from the stack into it
+1 2 3 4 5 >list* \ creates a new list and loads all items from the stack into it
 ```
   
 ```forth
@@ -342,7 +342,7 @@ Maps contain key value pairs.
 ```
 
 ```forth
-'key1' 'value1' map* \ creates a new map and loads all items from the stack into it. There must be an even number of items on the stack.
+'key1' 'value1' >map* \ creates a new map and loads all items from the stack into it. There must be an even number of items on the stack.
 ```
 
 ```forth

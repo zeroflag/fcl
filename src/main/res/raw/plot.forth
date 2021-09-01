@@ -90,6 +90,6 @@ var: oy
         x inc
     } each ;
 
-: plots ( .. -- ) depth 0 != if list* plotl then ;
+: plots ( .. -- ) depth 0 != if >list* plotl then ;
 
 reset-zoom
