@@ -60,3 +60,4 @@ var: juggler.steps 5 juggler.steps !
 
 : udp-send-byte ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendByte/Nis jvm-call-static ;
 : udp-send-str ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendStr/sis jvm-call-static ;
+: udp-send-lst ( host port lst -- n ) :com.vectron.forthcalc.support.Udp/sendLst/Tis jvm-call-static ;
