@@ -50,6 +50,7 @@ var: irr-guess 0 irr-guess !
     nil ;
 
 : irr* ( cashflow -- n ) >list* irr ;
+: pmt -> n 100 / -> r -> p p 1 1 1 r + n pow / - r / / ;
 
 var: juggler.steps 5 juggler.steps !
 [ ] val: juggler.exclude
