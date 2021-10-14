@@ -524,7 +524,7 @@ A shorter way to do the same is to use `+json-type` on the map.
 
 ```forth
 udp-send-byte ( host port byte -- n )
-udp-send-str ( host port byte -- n )
+udp-send-str ( host port str -- n )
 udp-send-lst ( host port lst -- n ) 
 ```
 
