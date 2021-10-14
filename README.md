@@ -525,8 +525,10 @@ A shorter way to do the same is to use `+json-type` on the map.
 ```forth
 udp-send-byte ( host port byte -- n )
 udp-send-str ( host port str -- n )
-udp-send-lst ( host port lst -- n ) 
+udp-send-lst ( host port lst -- n )
 ```
+
+All of the above words return an error code where 0 indicates success, -1 indicates unkonw host, -2 indicates network error.
 
 ### Examples
 
