@@ -26,7 +26,7 @@
 : fire ( monthly-expense real-interest-rate -- money-needed ) 100 / swap 12 * swap / ;
 : ri ( nominal-interest-rate inflation-rate -- real-interest-rate ) 100 / 1+ swap 100 / 1+ swap / 1- 100 * ;
 : cagr ( bv ev n -- p ) 1 swap / >r swap / r> pow 1- 100 * ;
-: ggm ( cf r g -- pvg ) 100 / swap 100 / swap - / ;
+: iv ( cf r g -- pvg ) 100 / swap 100 / swap - / ;
 ( trigonometry )
 : pi ( n -- n ) :java.lang.Math/PI jvm-static-var ;
 : sin ( n -- n ) :java.lang.Math/sin/d jvm-call-static ;
