@@ -520,6 +520,25 @@ A shorter way to do the same is to use `+json-type` on the map.
   then ;
 ```
 
+## UDP
+
+```forth
+udp-send-byte ( host port byte -- n )
+udp-send-str ( host port byte -- n )
+udp-send-lst ( host port lst -- n ) 
+```
+
+### Examples
+
+````forth
+'192.168.0.10' 8070 'A' udp-send-str \ send letter 'A' via UDP to 192.168.0.10:8070
+
+'192.168.0.10' 8070 65 udp-send-byte \ same as above but the payload is a single byte
+
+'192.168.0.10' 8070 [ 65 ] udp-send-lst \ same as above the payload is a list
+
+```
+
 ## Misc
 
 ### Tone generator
