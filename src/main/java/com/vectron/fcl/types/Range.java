@@ -67,8 +67,8 @@ public class Range implements Obj {
     @Override
     public String toString() {
         return by.doubleValue() == 1
-                ? String.format("%d..%d (%d)", from, to, current)
-                : String.format("%d...%d (%d) by %d", from, to, current, by);
+                ? String.format("%s..%s (%s)", from, to, current)
+                : String.format("%s...%s (%s) by %s", from, to, current, by);
     }
 
     @Override
