@@ -451,7 +451,7 @@ public class Fcl {
         addPrimitive("abort", () -> { throw new Aborted(stack.pop().asStr().value()); });
         addPrimitive("eval", () -> eval(stack.pop().asStr().value()));
         addPrimitive("words", () -> {
-            List<String> words = new ArrayList<>(wordList());
+            List<String> words = new ArrayList<>(wordList(Dictionary.Filter.ALL));
             Collections.sort(words);
             for (String each : words) {
                 transcript.show(each);
@@ -709,7 +709,7 @@ public class Fcl {
         rstack.clean();
     }
 
-    public Set<String> wordList() {
-        return dict.wordList();
+    public Set<String> wordList(Dictionary.Filter filter) {
+        return dict.wordList(filter);
     }
 }

@@ -8,6 +8,19 @@ import java.util.List;
 import java.util.Set;
 
 public class Dictionary {
+    public interface Filter {
+        boolean shouldInclude(String name);
+        Filter ALL = new Filter() {
+            public boolean shouldInclude(String name) {
+                return true;
+            }
+        };
+        Filter NO_IMPLS = new Filter() {
+            public boolean shouldInclude(String name) {
+                return !name.endsWith("-impl");
+            }
+        };
+    }
     private final List<Word> dict = new ArrayList<>();
     private final Fcl fcl;
 
@@ -34,10 +47,11 @@ public class Dictionary {
             dict.remove(existing);
     }
 
-    public Set<String> wordList() {
+    public Set<String> wordList(Filter filter) {
         Set<String> result = new HashSet<>();
         for (Word word : dict) {
-            result.add(word.name());
+            if (filter.shouldInclude(word.name()))
+                result.add(word.name());
         }
         return result;
     }
