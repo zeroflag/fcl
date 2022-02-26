@@ -13,6 +13,7 @@ import static com.vectron.fcl.Fcl.STRICT;
 public class Num implements Obj, LogicOperand, ArithmeticOperand {
     public static final Num ZERO = new Num(0);
     public static final Num ONE = new Num(1);
+    public static final Num MINUS_ONE = new Num(-1);
     public static final Num NAN = new Num(Double.NaN);
     private static final DecimalFormat format;
     private final Number value;
@@ -92,6 +93,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num((Double) value - (Long)other.value());
         else if (value instanceof Double && other.value() instanceof Double)
             return new Num((Double) value - (Double) other.value());
+        else if (other instanceof Lst)
+            return ((Lst) other).mul(Num.MINUS_ONE).add(this);
         else if (STRICT)
             throw new TypeMismatched("-", this, other);
         return Num.NAN;
@@ -126,22 +129,25 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num((Double) value / (Long)other.value());
         else if (value instanceof Double && other.value() instanceof Double)
             return new Num((Double) value / (Double) other.value());
+        else if (other instanceof Lst)
+            return ((ArithmeticOperand) ((Lst) other).pow(Num.MINUS_ONE)).mul(this);
         else if (STRICT)
             throw new TypeMismatched("/", this, other);
         return Num.NAN;
     }
 
-    public Num power(Num exponent) {
-        if (value instanceof Long && exponent.value instanceof Long)
-            return new Num(Math.pow(((Long) value).doubleValue(), ((Long) exponent.value).doubleValue()));
-        else if (value instanceof Long && exponent.value instanceof Double)
-            return new Num(Math.pow(((Long) value).doubleValue(), exponent.doubleValue()));
-        else if (value instanceof Double && exponent.value instanceof Long)
-            return new Num(Math.pow((Double)value, ((Long) exponent.value).doubleValue()));
-        else if (value instanceof Double && exponent.value instanceof Double)
-            return new Num(Math.pow((Double)value, exponent.doubleValue()));
-        else if (STRICT)
-            throw new TypeMismatched("POW", this, exponent);
+    @Override
+    public Obj pow(Obj other) {
+        if (other instanceof Num) {
+            return new Num(Math.pow(doubleValue(), other.doubleValue()));
+        } else if (other instanceof Lst) {
+            Lst result = Lst.empty();
+            for (Obj each : ((Lst) other).value())
+                result.append(this.pow(each));
+            return result;
+        } else if (STRICT) {
+            throw new TypeMismatched("pow", this, other);
+        }
         return Num.NAN;
     }
 
@@ -285,5 +291,10 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
         if (value instanceof Double)
             return !((Double) value).isNaN() && !((Double) value).isInfinite();
         return true;
+    }
+
+    @Override
+    public Bool iterable() {
+        return Bool.FALSE;
     }
 }

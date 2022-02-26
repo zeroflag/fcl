@@ -58,6 +58,11 @@ public class Range implements Obj {
         return new Str(toString());
     }
 
+    @Override
+    public Bool iterable() {
+        return Bool.TRUE;
+    }
+
     public Iterator<Obj> iterator() {
         if (iterator == null)
             iterator = new RangeIterator();

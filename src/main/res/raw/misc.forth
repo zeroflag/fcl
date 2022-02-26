@@ -1,5 +1,5 @@
 : hist ( c -- m )
-    dup 'iterator' jvm-has-method not if
+    dup iterator? not if
         drop #[ ]# exit
     then
     <map> -> tbl {
@@ -18,8 +18,6 @@
 : torch ( n -- n ) :com.vectron.forthcalc.support.Torch/toggle/O jvm-call-static ;
 
 : match: immediate ` lastword set-predicate ;
-
-: round* { round } map* ;
 
 : npv ( cashflow rate -- n )
     -> rate 0 => year
@@ -61,3 +59,7 @@ var: juggler.steps 5 juggler.steps !
 : udp-send-byte ( host port byte -- n ) :com.vectron.forthcalc.support.Udp/sendByte/Nis jvm-call-static ;
 : udp-send-str ( host port str -- n ) :com.vectron.forthcalc.support.Udp/sendStr/sis jvm-call-static ;
 : udp-send-lst ( host port lst -- n ) :com.vectron.forthcalc.support.Udp/sendLst/Tis jvm-call-static ;
+
+: round ( n -- n ) dup iterator? if { round } map else round1 then ;
+: sqrt  ( n -- n ) dup iterator? if { sqrt  } map else sqrt1  then ;
+: round* { round } map* ;

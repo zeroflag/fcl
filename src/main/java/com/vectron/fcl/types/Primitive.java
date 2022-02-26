@@ -104,4 +104,9 @@ public class Primitive implements Word {
                 ? name.compareTo(((Primitive) other).name)
                 : -1;
     }
+
+    @Override
+    public Bool iterable() {
+        return Bool.FALSE;
+    }
 }

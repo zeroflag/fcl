@@ -65,6 +65,11 @@ public class Dic implements Obj {
         return -1;
     }
 
+    @Override
+    public Bool iterable() {
+        return Bool.TRUE;
+    }
+
     public Iterator<Lst> iterator() {
         return new Iterator<Lst>() {
             private Iterator<Map.Entry<Obj,Obj>> it = value.entrySet().iterator();

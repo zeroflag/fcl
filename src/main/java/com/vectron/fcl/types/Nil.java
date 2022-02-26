@@ -63,4 +63,9 @@ public class Nil implements Obj {
     public String toString() {
         return "nil";
     }
+
+    @Override
+    public Bool iterable() {
+        return Bool.FALSE;
+    }
 }

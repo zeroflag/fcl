@@ -820,6 +820,18 @@ public class FclTest {
     }
 
     @Test
+    public void testMaps2() throws Exception {
+        assertEquals("[ [ 1 3 ] ]", evalPop("#[ 0.8 3.3 ]# round").toString());
+        assertEquals("[ [ 1.0 3.0 ] ]", evalPop("#[ 1 9 ]# sqrt").toString());
+        try {
+            evalPop("#[ 'a' 1 ]# round");
+            fail("expected type mismatch");
+        } catch (TypeMismatched expected) {
+            resetForth();
+        }
+    }
+
+    @Test
     public void testList() {
         assertEquals(0, evalPop("<list> size").intValue());
         assertEquals(1, evalPop("<list> dup 'val1' add size").intValue());
@@ -994,23 +1006,38 @@ public class FclTest {
     }
 
     @Test
-    public void testListArithmetic() {
-        try {
-            assertEquals("[ 3 6 9 ]", evalPop("[ 1 2 3 ] [ 1 2 3 ] +").toString());
-            fail();
-        } catch (TypeMismatched e) { }
-        try {
-            assertEquals("[ 3 6 9 ]", evalPop("[ 1 2 3 ] [ 1 2 3 ] -").toString());
-            fail();
-        } catch (TypeMismatched e) { }
-        try {
-            assertEquals("[ 3 6 9 ]", evalPop("[ 1 2 3 ] [ 1 2 3 ] *").toString());
-            fail();
-        } catch (TypeMismatched e) { }
-        try {
-            assertEquals("[ 3 6 9 ]", evalPop("[ 1 2 3 ] [ 1 2 3 ] /").toString());
-            fail();
-        } catch (TypeMismatched e) { }
+    public void testListArithmetic() throws Exception {
+        assertEquals("[ 5 7 9 ]", evalPop("[ 1 2 3 ] [ 4 5 6 ] +").toString());
+        assertEquals("[ -3 1 0 ]", evalPop("[ 1 2 3 ] [ 4 1 3 ] -").toString());
+        assertEquals("[ 4 10 18 ]", evalPop("[ 1 2 3 ] [ 4 5 6 ] *").toString());
+        assertEquals("[ 4.0 2.5 2.0 ]", evalPop("[ 4 5 6 ] [ 1 2 3 ] /").toString());
+
+        assertEquals("[ 5 7 3 ]", evalPop("[ 1 2 3 ] [ 4 5 ] +").toString());
+        assertEquals("[ -3 1 3 ]", evalPop("[ 1 2 3 ] [ 4 1 ] -").toString());
+        assertEquals("[ 4 10 3 ]", evalPop("[ 1 2 3 ] [ 4 5 ] *").toString());
+        assertEquals("[ 4.0 2.5 6.0 ]", evalPop("[ 4 5 6 ] [ 1 2 ] /").toString());
+
+        assertEquals("[ 5 7 6 ]", evalPop("[ 1 2 ] [ 4 5 6 ] +").toString());
+        assertEquals("[ -3 1 -3 ]", evalPop("[ 1 2 ] [ 4 1 3 ] -").toString());
+        assertEquals("[ 4 10 6 ]", evalPop("[ 1 2 ] [ 4 5 6 ] *").toString());
+        assertEquals("[ 4.0 2.5 0.0 ]", evalPop("[ 4 5 ] [ 1 2 3 ] /").toString());
+
+        assertEquals("[ 5 7 [ 11 5 ] ]", evalPop("[ 4 5 [ 7 ] ] [ 1 2 [ 4 5 ] ] +").toString());
+
+        assertEquals("[ 4 5 [ 6 7 ] ]", evalPop("[ 1 2 [ 3 4 ] ] 3 +").toString());
+        assertEquals("[ 0 2 [ 5 3 ] ]", evalPop("[ 2 4 [ 7 5 ] ] 2 -").toString());
+        assertEquals("[ 3 6 [ 9 12 ] ]", evalPop("[ 1 2 [ 3 4 ] ] 3 *").toString());
+        assertEquals("[ 1.0 2.0 [ 3.0 4.0 ] ]", evalPop("[ 2 4 [ 6 8 ] ] 2 /").toString());
+
+        assertEquals("[ 2.0 4.0 3.0 ]", evalPop("[ 4 16 9 ] sqrt").toString());
+        assertEquals("[ 1 6 3 ]", evalPop("[ 1.3 5.6 3.2 ] round").toString());
+
+        assertEquals("[ 2.0 4.0 [ 3.0 ] ]", evalPop("[ 4 16 [ 9 ] ] sqrt").toString());
+        assertEquals("[ 1 [ 6 ] 3 ]", evalPop("[ 1.3 [ 5.6 ] 3.2 ] round").toString());
+
+        assertEquals("[ 1 2 3 ]", evalPop("[ 1 2 3 ] flatten").toString());
+        assertEquals("[ 1 2 3 ]", evalPop("[ 1 [ 2 ] 3 ] flatten").toString());
+        assertEquals("[ 4 16 9 10 3 3 1 ]", evalPop("[ 4 16 [ 9 [ 10 ] [ 3 ] ] [ 3 1 ] ] flatten").toString());
 
         assertEquals("[ 3 6 9 ]", evalPop("3 [ 1 2 3 ] *").toString());
         assertEquals("[ 3 6 9 ]", evalPop("[ 1 2 3 ] 3 *").toString());
@@ -1018,20 +1045,46 @@ public class FclTest {
         assertEquals("[ 4 5 6 ]", evalPop("3 [ 1 2 3 ] +").toString());
         assertEquals("[ 4 5 6 ]", evalPop("[ 1 2 3 ] 3 +").toString());
         assertEquals("[ 1 2 3 ]", evalPop("[ 4 5 6 ] 3 -").toString());
+
+        assertEquals("[ -1 -2 -3 ]", evalPop("3 [ 4 5 6 ] -").toString());
+        assertEquals("[ 2 1 0 ]", evalPop("3 [ 1 2 3 ] -").toString());
+
+        assertEquals("[ 5.0 2.0 10.0 ]", evalPop("10 [ 2 5 1 ] /").toString());
+
+        assertEquals("[ 1.0 2.0 4.0 8.0 ]", evalPop("2 [ 0 1 2 3 ] pow").toString());
+        assertEquals("[ 1.0 4.0 9.0 ]", evalPop("[ 1 2 3 ] 2 pow").toString());
+        assertEquals("[ 25.0 27.0 16.0 ]", evalPop("[ 5 3 2 ] [ 2 3 4 ] pow").toString());
+
         try {
-            assertEquals("[ 2 1 0 ]", evalPop("3 [ 1 2 3 ] -").toString());
-            fail();
-        } catch (TypeMismatched e) { }
+            evalPop("[ 'a' ] sqrt");
+            fail("expected type mismatch");
+        } catch (TypeMismatched expected) {
+            resetForth();
+        }
         try {
-            assertEquals("[ 5 2 10 ]", evalPop("10 [ 2 5 1 ] /").toString());
-            fail();
-        } catch (TypeMismatched e) { }
+            evalPop("[ 'a' ] round");
+            fail("expected type mismatch");
+        } catch (TypeMismatched expected) {
+            resetForth();
+        }
     }
 
     @Test
-    public void testStrArithmetic() {
+    public void testStrArithmetic() throws Exception {
         assertEquals("'ababab'", evalPop("3 'ab' *").toString());
         assertEquals("'ababab'", evalPop("'ab' 3 *").toString());
+        try {
+            evalPop("'ab' sqrt");
+            fail("expected type mismatch");
+        } catch (TypeMismatched expected) {
+            resetForth();
+        }
+        try {
+            evalPop("'ab' round");
+            fail("expected type mismatch");
+        } catch (TypeMismatched expected) {
+            resetForth();
+        }
     }
 
     @Test
@@ -1051,6 +1104,11 @@ public class FclTest {
     @Test
     public void testQuotations() {
         assertEquals(2, evalPop(": tst 1 { 1+ } yield ; tst ").intValue());
+        assertEquals(2, evalPop(": tst 1 true if { 1+ } yield then ; tst ").intValue());
+        assertEquals(2, evalPop(": tst 1 true if { 1+ } yield else 1 0 / then ; tst ").intValue());
+        assertEquals(3, evalPop(": tst 1 false if { 0 / } yield else 2 + then ; tst ").intValue());
+        assertEquals(42, evalPop(": tst true  if 42 -> x x else 43 then ; tst").intValue());
+        assertEquals(43, evalPop(": tst false if 42 -> x x else 43 then ; tst").intValue());
         assertEquals(asList(101l, 100l), evalGetStack(": tst 100 { 1+ } keep ; tst"));
         assertEquals(asList(11l, 100l), evalGetStack(": tst 10 100 { 1+ } dip ; tst"));
         assertEquals(asList(11l, 9l), evalGetStack(": tst 10 { 1+ } { 1- } bi ; tst"));

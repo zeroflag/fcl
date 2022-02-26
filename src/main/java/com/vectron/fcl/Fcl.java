@@ -153,6 +153,11 @@ public class Fcl {
                     ? name.compareTo(((ColonDef) other).name)
                     : -1;
         }
+
+        @Override
+        public Bool iterable() {
+            return Bool.FALSE;
+        }
     }
 
     public class Var implements Word {
@@ -253,6 +258,11 @@ public class Fcl {
                     ? name.compareTo(((Var) other).name)
                     : -1;
         }
+
+        @Override
+        public Bool iterable() {
+            return Bool.FALSE;
+        }
     }
 
     public class Val implements Word {
@@ -352,6 +362,11 @@ public class Fcl {
                     ? name.compareTo(((Val) other).name)
                     : -1;
         }
+
+        @Override
+        public Bool iterable() {
+            return Bool.FALSE;
+        }
     }
 
     public Fcl(FclStack stack, int heapSize, Transcript transcript) {
@@ -381,9 +396,9 @@ public class Fcl {
             stack.push(a.intDiv(b));
         });
         addPrimitive("pow", () -> {
-            Num exponent = stack.pop().asNum();
-            Num base = stack.pop().asNum();
-            stack.push(base.power(exponent));
+            Obj exponent = stack.pop();
+            Obj base = stack.pop();
+            stack.push(aOp(base).pow(exponent));
         });
         addPrimitive("and", () -> stack.push(lOp(stack.pop()).and(stack.pop())));
         addPrimitive("or", () -> stack.push((lOp(stack.pop())).or(stack.pop())));
@@ -484,7 +499,7 @@ public class Fcl {
         }
     }
 
-    private ArithmeticOperand aOp(Obj obj) {
+    public static ArithmeticOperand aOp(Obj obj) {
         try {
             return (ArithmeticOperand) obj;
         } catch (ClassCastException e) {
@@ -557,6 +572,10 @@ public class Fcl {
      * Like: if else then, loops, quotations
      */
     public void compileTmpAndEval(String script) {
+        // XXX ; make locals work, ; drops the frame, so we need to alloc first, normally this is done by the overridden colon
+        Word frameAlloc = dict.at("frame.alloc");
+        if (frameAlloc != null)
+            frameAlloc.enter();
         int savedDp = dp;
         Mode savedMode = mode;
         try {

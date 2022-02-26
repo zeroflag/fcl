@@ -108,6 +108,11 @@ public class Str implements Obj, ArithmeticOperand {
         return new Str(new StringBuilder(value).reverse().toString());
     }
 
+    @Override
+    public Bool iterable() {
+        return Bool.TRUE;
+    }
+
     public Iterator<Str> iterator() {
         return new Iterator<Str>() {
             private int index = 0;
@@ -118,7 +123,7 @@ public class Str implements Obj, ArithmeticOperand {
 
             @Override
             public Str next() {
-                return new Str(Character.toString(value.charAt(index++)));
+                return new Chr(value.charAt(index++));
             }
         };
     }
@@ -151,6 +156,8 @@ public class Str implements Obj, ArithmeticOperand {
         return new Str(String.format(value, a));
     }
 
+    public Str flatten() { return this; }
+
     @Override
     public Obj add(Obj other) {
         throw new TypeMismatched("+", this, other);
@@ -176,5 +183,10 @@ public class Str implements Obj, ArithmeticOperand {
     @Override
     public Obj div(Obj other) {
         throw new TypeMismatched("+", this, other);
+    }
+
+    @Override
+    public Obj pow(Obj other) {
+        throw new TypeMismatched("pow", this, other);
     }
 }

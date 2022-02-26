@@ -60,4 +60,9 @@ public class Symbol implements Obj {
                 ? symbol.compareTo(((Symbol) other).symbol)
                 : -1;
     }
+
+    @Override
+    public Bool iterable() {
+        return Bool.FALSE;
+    }
 }

@@ -11,10 +11,6 @@
 
 : { immediate
     q.count inc
-    frame.allocated @ not if    ( We need to have a PSP up front for <q>, because quotations might have its own locals )
-        ['] frame.alloc ,       ( But at this point it might not be available yet unless the enclosing function has locals before the quotations )
-        true frame.allocated !
-    then
     ['] lit , here 6 + ,        ( beginning of the quotation )
     (psp)
     ['] <q> ,                   ( make a quotation object from address + psp )

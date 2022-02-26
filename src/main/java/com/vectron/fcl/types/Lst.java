@@ -1,5 +1,6 @@
 package com.vectron.fcl.types;
 
+import com.vectron.fcl.Fcl;
 import com.vectron.fcl.exceptions.TypeMismatched;
 
 import java.util.ArrayList;
@@ -75,6 +76,10 @@ public class Lst implements Obj, ArithmeticOperand {
         return value.get(index.intValue());
     }
 
+    private Obj atIfAbsent(int index, Obj defaultValue) {
+        return index < size() ? value.get(index) : defaultValue;
+    }
+
     public int indexOf(Obj item) {
         return value.indexOf(item);
     }
@@ -104,6 +109,11 @@ public class Lst implements Obj, ArithmeticOperand {
         value.clear();
     }
 
+    @Override
+    public Bool iterable() {
+        return Bool.TRUE;
+    }
+
     public Iterator<Obj> iterator() {
         return value.iterator();
     }
@@ -112,6 +122,23 @@ public class Lst implements Obj, ArithmeticOperand {
         Lst result = Lst.empty();
         for (int i = value.size() - 1; i >= 0; i--)
             result.append(value.get(i));
+        return result;
+    }
+
+    public Lst flatten() {
+        Lst result = Lst.empty();
+        result.value.addAll(flatten(this));
+        return result;
+    }
+
+    private static List<Obj> flatten(Lst nested) {
+        List<Obj> result = new ArrayList<>();
+        for (Obj each : nested.value) {
+            if (each instanceof Lst)
+                result.addAll(flatten((Lst)each));
+            else
+                result.add(each);
+        }
         return result;
     }
 
@@ -137,7 +164,15 @@ public class Lst implements Obj, ArithmeticOperand {
         if (other instanceof Num) {
             Lst result = Lst.empty();
             for (Obj each : value)
-                result.append(each.asNum().add(other));
+                result.append(Fcl.aOp(each).add(other));
+            return result;
+        } else if (other instanceof Lst) {
+            Lst result = Lst.empty();
+            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
+                Obj a = atIfAbsent(i, Num.ZERO);
+                Obj b = ((Lst)other).atIfAbsent(i, Num.ZERO);
+                result.append(Fcl.aOp(a).add(b));
+            }
             return result;
         } else {
             throw new TypeMismatched("+", this, other);
@@ -149,7 +184,15 @@ public class Lst implements Obj, ArithmeticOperand {
         if (other instanceof Num) {
             Lst result = Lst.empty();
             for (Obj each : value)
-                result.append(each.asNum().sub(other));
+                result.append(Fcl.aOp(each).sub(other));
+            return result;
+        } else if (other instanceof Lst) {
+            Lst result = Lst.empty();
+            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
+                Obj a = atIfAbsent(i, Num.ZERO);
+                Obj b = ((Lst)other).atIfAbsent(i, Num.ZERO);
+                result.append(Fcl.aOp(a).sub(b));
+            }
             return result;
         } else {
             throw new TypeMismatched("-", this, other);
@@ -161,7 +204,15 @@ public class Lst implements Obj, ArithmeticOperand {
         if (other instanceof Num) {
             Lst result = Lst.empty();
             for (Obj each : value)
-                result.append(each.asNum().mul(other));
+                result.append(Fcl.aOp(each).mul(other));
+            return result;
+        } else if (other instanceof Lst) {
+            Lst result = Lst.empty();
+            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
+                Obj a = atIfAbsent(i, Num.ONE);
+                Obj b = ((Lst)other).atIfAbsent(i, Num.ONE);
+                result.append(Fcl.aOp(a).mul(b));
+            }
             return result;
         } else {
             throw new TypeMismatched("*", this, other);
@@ -173,10 +224,38 @@ public class Lst implements Obj, ArithmeticOperand {
         if (other instanceof Num) {
             Lst result = Lst.empty();
             for (Obj each : value)
-                result.append(each.asNum().div(other));
+                result.append(Fcl.aOp(each).div(other));
+            return result;
+        } else if (other instanceof Lst) {
+            Lst result = Lst.empty();
+            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
+                Obj a = atIfAbsent(i, Num.ZERO);
+                Obj b = ((Lst)other).atIfAbsent(i, Num.ONE);
+                result.append((Fcl.aOp(a)).div(b));
+            }
             return result;
         } else {
             throw new TypeMismatched("/", this, other);
+        }
+    }
+
+    @Override
+    public Obj pow(Obj other) {
+        if (other instanceof Num) {
+            Lst result = Lst.empty();
+            for (Obj each : value)
+                result.append(Fcl.aOp(each).pow(other));
+            return result;
+        } else if (other instanceof Lst) {
+            Lst result = Lst.empty();
+            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
+                Obj a = atIfAbsent(i, Num.ONE);
+                Obj b = ((Lst)other).atIfAbsent(i, Num.ONE);
+                result.append(Fcl.aOp(a).pow(b));
+            }
+            return result;
+        } else {
+            throw new TypeMismatched("pow", this, other);
         }
     }
 }

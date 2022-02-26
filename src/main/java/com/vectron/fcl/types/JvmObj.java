@@ -90,6 +90,11 @@ public class JvmObj implements Obj {
     }
 
     @Override
+    public Bool iterable() {
+        return Bool.FALSE;
+    }
+
+    @Override
     public int compareTo(Obj o) {
         return -1;
     }

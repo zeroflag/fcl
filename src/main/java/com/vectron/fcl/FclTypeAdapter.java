@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.vectron.fcl.Fcl;
 import com.vectron.fcl.types.Bool;
+import com.vectron.fcl.types.Chr;
 import com.vectron.fcl.types.Dic;
 import com.vectron.fcl.types.JvmObj;
 import com.vectron.fcl.types.Lst;
@@ -32,6 +32,7 @@ public class FclTypeAdapter extends TypeAdapter<Object> {
         register("num", Num.class);
         register("bool", Bool.class);
         register("str", Str.class);
+        register("chr", Chr.class);
         register("dic", Dic.class);
         register("sym", Symbol.class);
         register("lst", Lst.class);

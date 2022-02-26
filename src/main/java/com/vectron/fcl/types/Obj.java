@@ -9,4 +9,5 @@ public interface Obj extends Comparable<Obj> {
     Str asStr();
     Object value();
     Object unwrap();
+    Bool iterable();
 }

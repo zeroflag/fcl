@@ -5,4 +5,5 @@ public interface ArithmeticOperand {
     Obj sub(Obj other);
     Obj mul(Obj other);
     Obj div(Obj other);
+    Obj pow(Obj other);
 }

@@ -75,4 +75,9 @@ public class Quot implements Obj {
     public String toString() {
         return "Quotation: " + address + ", " + stackFrame;
     }
+
+    @Override
+    public Bool iterable() {
+        return Bool.FALSE;
+    }
 }

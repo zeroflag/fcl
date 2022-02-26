@@ -14,6 +14,8 @@
 : jvmValue ( p -- o ) :value jvm-call-method ;
 : reverse ( l -- l ) :reverse jvm-call-method ;
 : format ( l s -- s ) :format/t jvm-call-method ;
+: iterator? ( o -- b ) :iterable jvm-call-method ;
+: flatten ( l -- l ) dup :flatten jvm-has-method if :flatten jvm-call-method then ;
 
 : each ( c q -- )
     -> q iter -> it
@@ -55,7 +57,7 @@
     loop
     result ;
 
-: peel ( l -- .. ) -> lst lst {  } each ;
+: peel ( l -- .. ) -> lst lst iterator? if lst {  } each else lst then ;
 : peel# ( m -- .. ) -> m m { dup 1st swap 2nd } each ;
 
 : >list* ( .. -- l )

@@ -40,8 +40,8 @@
 : tanh ( n -- n ) :java.lang.Math/tanh/d jvm-call-static ;
 ( math )
 : e ( n -- n ) :java.lang.Math/E jvm-static-var ;
-: round ( n -- n ) :java.lang.Math/round/d jvm-call-static ;
-: sqrt ( n -- n ) :java.lang.Math/sqrt/d jvm-call-static ;
+: round1 ( n -- n ) :java.lang.Math/round/d jvm-call-static ;
+: sqrt1 ( n -- n ) :java.lang.Math/sqrt/d jvm-call-static ;
 : 10log ( n -- n ) :java.lang.Math/log10/d jvm-call-static ;
 : nlog ( n n -- n ) swap 10log swap 10log / ;
 : 2log ( n -- n ) 2.0 nlog ;
@@ -50,7 +50,7 @@
     dup 1 <= if
         drop 1
     else
-        round dup 1 do i * loop
+        round1 dup 1 do i * loop
     then ;
 : avg* ( .. -- n ) depth dup 1 < if drop else >r sum* r> / then ;
 : rnd ( -- n ) :com.vectron.fcl.interop.JvmInterOp/random jvm-call-static ;

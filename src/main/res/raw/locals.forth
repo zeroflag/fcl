@@ -15,7 +15,6 @@
 var: #loc                       ( number of local variables per word, used in compile time )
 var: psp                        ( top of the parameter stack, each allocation adds max#loc to this )
 var: qpsp                       ( parameter stack pointer used by quotations )
-var: frame.allocated            ( compile time variable for checking if a frame was already allocated )
 var: q.count                    ( compile time counter for quotations, nested into each other )
 var: ldp
 
@@ -29,7 +28,6 @@ max#loc look-word-size *
 allot val: scratch              ( scratch area for compiling temporary lookup words )
 
 0     q.count !
-false frame.allocated !
 
 : full.check ( -- )  psp @ ps.size >= if 'pstack overflow' abort then ;
 : empty.check ( -- ) psp @ 0 <= if 'pstack underflow' abort then ;
@@ -70,11 +68,7 @@ false frame.allocated !
 
 : local ( n -- )
     check#
-    frame.allocated @ not if        ( is this the first local? )
-        true frame.allocated !
-        ['] frame.alloc ,           ( alloc new stack frame for max#loc )
-        scratch ldp !
-    then
+    #loc @ 0 = if scratch ldp ! then
     (frame.top)
     ['] lit       ,  #loc @  ,      ( local index )
     ['] -         ,  ['] !   ,      ( move local to from data stack to the stack frame )
@@ -94,13 +88,12 @@ false frame.allocated !
 : -> immediate 1 local ;
 : => immediate 0 local ;
 
-: unwind frame.allocated @ if ['] frame.drop , then ;
-
-: exit immediate unwind exit.prim @ , ;
+: exit immediate ['] frame.drop , exit.prim @ , ;
+: old; immediate exit.prim @ , nil , interpret reveal ;
 
 : ; immediate override
     ( runtime )
-        unwind
+        ['] frame.drop ,
         exit.prim @ ,
         nil ,
     ( compile time )
@@ -109,6 +102,7 @@ false frame.allocated !
             jvm-null names i + !
         loop
         0 #loc !
-        false frame.allocated !
         interpret
         reveal ;
+
+: : override : ['] frame.alloc , old;
