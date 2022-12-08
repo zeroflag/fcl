@@ -7,12 +7,10 @@ import java.util.Iterator;
 
 import static com.vectron.fcl.Fcl.STRICT;
 
-public class Range implements Obj {
-    private RangeIterator iterator;
+public class Range implements Obj, Iterable<Obj>, ArithmeticOperand {
     private final Num from;
     private final Num to;
     private final Num by;
-    private Num current;
 
     public static Range create(Num by, Num to, Num from) {
         return new Range(from, to, by);
@@ -24,7 +22,6 @@ public class Range implements Obj {
         this.from = from;
         this.to = to;
         this.by = by;
-        this.current = from;
     }
 
     @Override
@@ -63,22 +60,21 @@ public class Range implements Obj {
         return Bool.TRUE;
     }
 
+    @Override
     public Iterator<Obj> iterator() {
-        if (iterator == null)
-            iterator = new RangeIterator();
-        return iterator;
+        return new RangeIterator(from, to, by);
     }
 
     @Override
     public String toString() {
         return by.doubleValue() == 1
-                ? String.format("%s..%s (%s)", from, to, current)
-                : String.format("%s...%s (%s) by %s", from, to, current, by);
+                ? String.format("%s..%s", from, to)
+                : String.format("%s..%s by %s", from, to, by);
     }
 
     @Override
     public Object value() {
-        return iterator;
+        return new RangeIterator(from, to, by);
     }
 
     @Override
@@ -91,7 +87,50 @@ public class Range implements Obj {
         return -1;
     }
 
-    public class RangeIterator implements Iterator<Obj> {
+    @Override
+    public Obj add(Obj other) {
+        return toLst().add(other);
+    }
+
+    @Override
+    public Obj sub(Obj other) {
+        return toLst().sub(other);
+    }
+
+    @Override
+    public Obj mul(Obj other) {
+        return toLst().mul(other);
+    }
+
+    @Override
+    public Obj div(Obj other) {
+        return toLst().div(other);
+    }
+
+    @Override
+    public Obj pow(Obj other) {
+        return toLst().pow(other);
+    }
+
+    private Lst toLst() {
+        Lst result = Lst.empty();
+        Iterator<Obj> it = iterator();
+        while (it.hasNext())
+            result.append(it.next());
+        return result;
+    }
+
+    public static class RangeIterator implements Iterator<Obj> {
+        private Num current;
+        private final Num to;
+        private final Num by;
+
+        public RangeIterator(Num from, Num to, Num by) {
+            this.current = from;
+            this.to = to;
+            this.by = by;
+        }
+
         @Override
         public boolean hasNext() {
             return by.doubleValue() > 0

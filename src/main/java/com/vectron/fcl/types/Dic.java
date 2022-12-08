@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static com.vectron.fcl.Fcl.STRICT;
 
-public class Dic implements Obj {
+public class Dic implements Obj, Iterable<Lst> {
     private final Map<Obj, Obj> value = new LinkedHashMap<>();
 
     public static Dic empty() {
@@ -70,6 +70,7 @@ public class Dic implements Obj {
         return Bool.TRUE;
     }
 
+    @Override
     public Iterator<Lst> iterator() {
         return new Iterator<Lst>() {
             private Iterator<Map.Entry<Obj,Obj>> it = value.entrySet().iterator();

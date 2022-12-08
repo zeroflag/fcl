@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import static com.vectron.fcl.Fcl.STRICT;
 
-public class Str implements Obj, ArithmeticOperand {
+public class Str implements Obj, ArithmeticOperand, Iterable<Chr> {
     private final String value;
 
     public Str(String value) {
@@ -113,8 +113,9 @@ public class Str implements Obj, ArithmeticOperand {
         return Bool.TRUE;
     }
 
-    public Iterator<Str> iterator() {
-        return new Iterator<Str>() {
+    @Override
+    public Iterator<Chr> iterator() {
+        return new Iterator<Chr>() {
             private int index = 0;
             @Override
             public boolean hasNext() {
@@ -122,7 +123,7 @@ public class Str implements Obj, ArithmeticOperand {
             }
 
             @Override
-            public Str next() {
+            public Chr next() {
                 return new Chr(value.charAt(index++));
             }
         };

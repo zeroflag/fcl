@@ -1070,6 +1070,49 @@ public class FclTest {
     }
 
     @Test
+    public void testRangeArithmetic() {
+        assertEquals("[ 1 2 3 ]", evalPop("1 3 .. round").toString());
+        assertEquals("[ 16 16 17 17 17 ]", evalPop("256 300 10 ... sqrt round").toString());
+
+        assertEquals("[ 11 12 13 ]", evalPop("10 1 3 .. +").toString());
+        assertEquals("[ 9 8 7 ]", evalPop("10 1 3 .. -").toString());
+        assertEquals("[ 10 20 30 ]", evalPop("10 1 3 .. *").toString());
+        assertEquals("[ 6.0 3.0 2.0 ]", evalPop("6 1 3 .. /").toString());
+
+        assertEquals("[ 11 12 13 ]", evalPop("1 3 .. 10 +").toString());
+        assertEquals("[ -9 -8 -7 ]", evalPop("1 3 .. 10 -").toString());
+        assertEquals("[ 10 20 30 ]", evalPop("1 3 .. 10 *").toString());
+        assertEquals("[ 0.5 1.0 1.5 ]", evalPop("1 3 .. 2 /").toString());
+
+        assertEquals("[ 1.0 4.0 9.0 ]", evalPop("1 3 .. 2 pow").toString());
+        assertEquals("[ 2.0 4.0 8.0 ]", evalPop("2 1 3 .. pow").toString());
+
+        assertEquals("[ 11 13 15 ]", evalPop("[ 10 11 12 ] 1 3 .. +").toString());
+        assertEquals("[ 9 7 5 ]", evalPop("[ 10 9 8 ] 1 3 .. -").toString());
+        assertEquals("[ 10 22 36 ]", evalPop("[ 10 11 12 ] 1 3 .. *").toString());
+        assertEquals("[ 10.0 6.0 10.0 ]", evalPop("[ 10 12 30 ] 1 3 .. /").toString());
+        assertEquals("[ 2.0 9.0 64.0 ]", evalPop("[ 2 3 4 ] 1 3 .. pow").toString());
+
+        assertEquals("[ 11 13 15 ]", evalPop("1 3 .. [ 10 11 12 ] +").toString());
+        assertEquals("[ -9 1 -1 ]", evalPop("1 3 .. [ 10 1 4 ] -").toString());
+        assertEquals("[ 2 6 12 ]", evalPop("1 3 .. [ 2 3 4 ] *").toString());
+        assertEquals("[ 0.5 0.25 1.0 ]", evalPop("1 3 .. [ 2 8 3 ] /").toString());
+        assertEquals("[ 1.0 8.0 27.0 ]", evalPop("1 3 .. [ 2 3 3 ] pow").toString());
+
+        assertEquals("[ 11 13 15 ]", evalPop("1 3 .. 10 12 .. +").toString());
+        assertEquals("[ 9 8 7 ]", evalPop("10 12 .. 1 5 2 ... -").toString()); // [1 3 5]
+        assertEquals("[ 10 22 36 ]", evalPop("1 3 .. 10 12 .. *").toString());
+        assertEquals("[ 11.0 4.0 2.6 ]", evalPop("11 13 .. 1 5 2 ... /").toString()); // [1 3 5]
+        assertEquals("[ 1.0 8.0 243.0 ]", evalPop("1 3 .. 1 5 2 ... pow").toString()); // [1 3 5]
+
+        assertEquals("[ 2 4 3 ]", evalPop("1 3 .. 1 2 .. +").toString());
+        assertEquals("[ 9 8 12 ]", evalPop("10 12 .. 1 3 2 ... -").toString()); // [1 3]
+        assertEquals("[ 10 22 3 ]", evalPop("1 3 .. 10 11 .. *").toString());
+        assertEquals("[ 11.0 4.0 13.0 ]", evalPop("11 13 .. 1 3 2 ... /").toString()); // [1 3]
+        assertEquals("[ 1.0 8.0 3.0 ]", evalPop("1 3 .. 1 3 2 ... pow").toString()); // [1 3]
+    }
+
+    @Test
     public void testStrArithmetic() throws Exception {
         assertEquals("'ababab'", evalPop("3 'ab' *").toString());
         assertEquals("'ababab'", evalPop("'ab' 3 *").toString());

@@ -9,7 +9,7 @@ import java.util.List;
 
 import static com.vectron.fcl.Fcl.STRICT;
 
-public class Lst implements Obj, ArithmeticOperand {
+public class Lst implements Obj, ArithmeticOperand, Iterable<Obj> {
     private final List<Obj> value = new ArrayList<>();
 
     public static Lst empty() {
@@ -76,10 +76,6 @@ public class Lst implements Obj, ArithmeticOperand {
         return value.get(index.intValue());
     }
 
-    private Obj atIfAbsent(int index, Obj defaultValue) {
-        return index < size() ? value.get(index) : defaultValue;
-    }
-
     public int indexOf(Obj item) {
         return value.indexOf(item);
     }
@@ -114,6 +110,7 @@ public class Lst implements Obj, ArithmeticOperand {
         return Bool.TRUE;
     }
 
+    @Override
     public Iterator<Obj> iterator() {
         return value.iterator();
     }
@@ -166,11 +163,13 @@ public class Lst implements Obj, ArithmeticOperand {
             for (Obj each : value)
                 result.append(Fcl.aOp(each).add(other));
             return result;
-        } else if (other instanceof Lst) {
+        } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
-                Obj a = atIfAbsent(i, Num.ZERO);
-                Obj b = ((Lst)other).atIfAbsent(i, Num.ZERO);
+            Iterator<Obj> it1 = this.iterator();
+            Iterator<Obj> it2 = ((Iterable<Obj>) other).iterator();
+            while (it1.hasNext() || it2.hasNext()) {
+                Obj a = it1.hasNext() ? it1.next() : Num.ZERO;
+                Obj b = it2.hasNext() ? it2.next() : Num.ZERO;
                 result.append(Fcl.aOp(a).add(b));
             }
             return result;
@@ -186,11 +185,13 @@ public class Lst implements Obj, ArithmeticOperand {
             for (Obj each : value)
                 result.append(Fcl.aOp(each).sub(other));
             return result;
-        } else if (other instanceof Lst) {
+        } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
-                Obj a = atIfAbsent(i, Num.ZERO);
-                Obj b = ((Lst)other).atIfAbsent(i, Num.ZERO);
+            Iterator<Obj> it1 = this.iterator();
+            Iterator<Obj> it2 = ((Iterable<Obj>) other).iterator();
+            while (it1.hasNext() || it2.hasNext()) {
+                Obj a = it1.hasNext() ? it1.next() : Num.ZERO;
+                Obj b = it2.hasNext() ? it2.next() : Num.ZERO;
                 result.append(Fcl.aOp(a).sub(b));
             }
             return result;
@@ -206,11 +207,13 @@ public class Lst implements Obj, ArithmeticOperand {
             for (Obj each : value)
                 result.append(Fcl.aOp(each).mul(other));
             return result;
-        } else if (other instanceof Lst) {
+        } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
-                Obj a = atIfAbsent(i, Num.ONE);
-                Obj b = ((Lst)other).atIfAbsent(i, Num.ONE);
+            Iterator<Obj> it1 = this.iterator();
+            Iterator<Obj> it2 = ((Iterable<Obj>) other).iterator();
+            while (it1.hasNext() || it2.hasNext()) {
+                Obj a = it1.hasNext() ? it1.next() : Num.ONE;
+                Obj b = it2.hasNext() ? it2.next() : Num.ONE;
                 result.append(Fcl.aOp(a).mul(b));
             }
             return result;
@@ -226,12 +229,14 @@ public class Lst implements Obj, ArithmeticOperand {
             for (Obj each : value)
                 result.append(Fcl.aOp(each).div(other));
             return result;
-        } else if (other instanceof Lst) {
+        } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
-                Obj a = atIfAbsent(i, Num.ZERO);
-                Obj b = ((Lst)other).atIfAbsent(i, Num.ONE);
-                result.append((Fcl.aOp(a)).div(b));
+            Iterator<Obj> it1 = this.iterator();
+            Iterator<Obj> it2 = ((Iterable<Obj>) other).iterator();
+            while (it1.hasNext() || it2.hasNext()) {
+                Obj a = it1.hasNext() ? it1.next() : Num.ZERO;
+                Obj b = it2.hasNext() ? it2.next() : Num.ONE;
+                result.append(Fcl.aOp(a).div(b));
             }
             return result;
         } else {
@@ -246,11 +251,13 @@ public class Lst implements Obj, ArithmeticOperand {
             for (Obj each : value)
                 result.append(Fcl.aOp(each).pow(other));
             return result;
-        } else if (other instanceof Lst) {
+        } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            for (int i = 0; i < Math.max(size(), ((Lst) other).size()); i++) {
-                Obj a = atIfAbsent(i, Num.ONE);
-                Obj b = ((Lst)other).atIfAbsent(i, Num.ONE);
+            Iterator<Obj> it1 = this.iterator();
+            Iterator<Obj> it2 = ((Iterable<Obj>) other).iterator();
+            while (it1.hasNext() || it2.hasNext()) {
+                Obj a = it1.hasNext() ? it1.next() : Num.ONE;
+                Obj b = it2.hasNext() ? it2.next() : Num.ONE;
                 result.append(Fcl.aOp(a).pow(b));
             }
             return result;

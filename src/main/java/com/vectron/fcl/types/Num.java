@@ -5,6 +5,7 @@ import com.vectron.fcl.exceptions.TypeMismatched;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -76,8 +77,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num((Double) value + (Long)other.value());
         else if (value instanceof Double && other.value() instanceof Double)
             return new Num((Double) value + (Double) other.value());
-        else if (other instanceof Lst)
-            return ((Lst) other).add(this);
+        else if (other instanceof ArithmeticOperand && !(other instanceof Num))
+            return ((ArithmeticOperand) other).add(this);
         else if (STRICT)
             throw new TypeMismatched("+", this, other);
         return Num.NAN;
@@ -93,8 +94,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num((Double) value - (Long)other.value());
         else if (value instanceof Double && other.value() instanceof Double)
             return new Num((Double) value - (Double) other.value());
-        else if (other instanceof Lst)
-            return ((Lst) other).mul(Num.MINUS_ONE).add(this);
+        else if (other instanceof ArithmeticOperand && !(other instanceof Num))
+            return ((ArithmeticOperand)((ArithmeticOperand) other).mul(Num.MINUS_ONE)).add(this);
         else if (STRICT)
             throw new TypeMismatched("-", this, other);
         return Num.NAN;
@@ -110,10 +111,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num((Double) value * (Long)other.value());
         else if (value instanceof Double && other.value() instanceof Double)
             return new Num((Double) value * (Double) other.value());
-        else if (other instanceof Lst)
-            return ((Lst) other).mul(this);
-        else if (other instanceof Str)
-            return ((Str) other).mul(this);
+        else if (other instanceof ArithmeticOperand && !(other instanceof Num))
+            return ((ArithmeticOperand) other).mul(this);
         else if (STRICT)
             throw new TypeMismatched("*", this, other);
         return Num.NAN;
@@ -129,8 +128,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num((Double) value / (Long)other.value());
         else if (value instanceof Double && other.value() instanceof Double)
             return new Num((Double) value / (Double) other.value());
-        else if (other instanceof Lst)
-            return ((ArithmeticOperand) ((Lst) other).pow(Num.MINUS_ONE)).mul(this);
+        else if (other instanceof ArithmeticOperand && !(other instanceof Num))
+            return ((ArithmeticOperand) ((ArithmeticOperand) other).pow(Num.MINUS_ONE)).mul(this);
         else if (STRICT)
             throw new TypeMismatched("/", this, other);
         return Num.NAN;
@@ -140,10 +139,11 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
     public Obj pow(Obj other) {
         if (other instanceof Num) {
             return new Num(Math.pow(doubleValue(), other.doubleValue()));
-        } else if (other instanceof Lst) {
+        } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            for (Obj each : ((Lst) other).value())
-                result.append(this.pow(each));
+            Iterator<Obj> it = ((Iterable)other).iterator();
+            while (it.hasNext())
+                result.append(this.pow(it.next()));
             return result;
         } else if (STRICT) {
             throw new TypeMismatched("pow", this, other);
