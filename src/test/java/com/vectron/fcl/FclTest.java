@@ -400,7 +400,12 @@ public class FclTest {
         assertEquals(10, evalPop("100 10 percent").doubleValue(), 0.001);
         assertEquals(100, evalPop("100 100 percent").doubleValue(), 0.001);
         assertEquals(130.686, evalPop("4356.2 3 percent").doubleValue(), 0.001);
-        assertEquals(0.16482, evalPop("1.23 13.4 percent").doubleValue(), 0.001);
+        assertEquals(10, evalPop("100 110 d%").doubleValue(), 0.001);
+        assertEquals(-10, evalPop("100 90 d%").doubleValue(), 0.001);
+        assertEquals(181.026, evalPop("23.4 65.76 d%").doubleValue(), 0.001);
+        assertEquals(-181.026, evalPop("-23.4 -65.76 d%").doubleValue(), 0.001);
+        assertEquals(-381.026, evalPop("23.4 -65.76 d%").doubleValue(), 0.001);
+        assertEquals(381.026, evalPop("-23.4 65.76 d%").doubleValue(), 0.001);
     }
 
     @Test

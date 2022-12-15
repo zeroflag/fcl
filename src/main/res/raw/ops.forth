@@ -100,3 +100,4 @@
     :java.util.Calendar/DAY_OF_MONTH jvm-static-var
     :java.util.Calendar/getInstance jvm-call-static
     :get/i jvm-call-method ;
+: d% ( n1 n2 -- n3 ) swap dup abs >r - r> / 100 * ;
