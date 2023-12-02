@@ -1,15 +1,14 @@
 package com.vectron.fcl.types;
 
+import static com.vectron.fcl.Fcl.STRICT;
+
 import com.vectron.fcl.exceptions.NotUnderstood;
 import com.vectron.fcl.exceptions.TypeMismatched;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
-
-import static com.vectron.fcl.Fcl.STRICT;
 
 public class Num implements Obj, LogicOperand, ArithmeticOperand {
     public static final Num ZERO = new Num(0);
@@ -61,10 +60,26 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
         return value.toString();
     }
 
-    public String display() {
-        return value instanceof Long || value instanceof Double
-                ? format.format(value)
-                : value.toString();
+    public String display(int radix) {
+        if (value instanceof Long || value instanceof Double) {
+            switch (radix) {
+                case 16:
+                    return value instanceof Long || approximatelyLong()
+                            ? String.format("0x%04X", longValue())
+                            : format.format(value);
+                case 2:
+                    return value instanceof Long || approximatelyLong()
+                            ? String.format("%8sb", Long.toBinaryString(longValue())).replace(' ', '0')
+                            : format.format(value);
+                default:
+                    return format.format(value);
+            }
+        }
+        return value.toString();
+    }
+
+    private boolean approximatelyLong() {
+        return Math.abs(longValue() - doubleValue()) < 0.001;
     }
 
     @Override
@@ -141,9 +156,8 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
             return new Num(Math.pow(doubleValue(), other.doubleValue()));
         } else if (other.iterable().boolValue()) {
             Lst result = Lst.empty();
-            Iterator<Obj> it = ((Iterable)other).iterator();
-            while (it.hasNext())
-                result.append(this.pow(it.next()));
+            for (Obj obj : (Iterable<Obj>) other)
+                result.append(this.pow(obj));
             return result;
         } else if (STRICT) {
             throw new TypeMismatched("pow", this, other);
@@ -252,7 +266,7 @@ public class Num implements Obj, LogicOperand, ArithmeticOperand {
         if (STRICT)
             throw new TypeMismatched(this, "bool");
         else
-            return value.longValue() != 0l;
+            return value.longValue() != 0L;
     }
 
     @Override
