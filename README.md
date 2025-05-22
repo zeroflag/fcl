@@ -566,3 +566,20 @@ torch ( n -- n )
 
 This will turn on the LED for 500 milliseconds.
 
+# CLI
+
+FCL is designed to run by Forth Calculator on Android, but if you want to try out something on PC you can start the REPL in the command line or evaluate a script.
+
+Starting the interactive REPL mode:
+
+```bash
+gradle repl --console plain
+```
+
+Executing a single `.fcl` file
+
+```bash
+gradle eval_file -Pfile=<file.fcl> --console plain
+```
+
+Note that some parts depend on the Android API and are not available when running on a regular computer.

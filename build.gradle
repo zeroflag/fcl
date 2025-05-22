@@ -28,6 +28,35 @@ version = '1'
 description = 'fcl'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
+
+task repl(type: JavaExec) {
+    group = "application"
+    description = "Start the REPL"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.vectron.fcl.cli.Main'
+    standardInput = System.in
+    logging.captureStandardOutput(LogLevel.QUIET)
+    logging.captureStandardError(LogLevel.QUIET)
+    systemProperty 'fcl.lib.dir', 'src/main/res/raw'
+}
+
+task eval_file(type: JavaExec) {
+    group = "application"
+    description = "Eval a file"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.vectron.fcl.cli.Main'
+    standardInput = System.in
+    logging.captureStandardOutput(LogLevel.QUIET)
+    logging.captureStandardError(LogLevel.QUIET)
+    systemProperty 'fcl.lib.dir', 'src/main/res/raw'
+    doFirst {
+        if (!project.hasProperty('file')) {
+            throw new GradleException("Please specify the file using -Pfile=yourfile.fcl")
+        }
+        args project.property('file')
+    }
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
